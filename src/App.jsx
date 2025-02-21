@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
+
+import HomePage from "./pages/home";
+import ErrorPage  from './pages/404';
+import LoginPage from "./pages/login";
+import SignInPage from "./pages/signIn";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // BORRAR ALV
+
+  const routes = [
+    { path: '/', element: <HomePage />, requiresAuth: true },
+    { path: "/login", element: <LoginPage setIsLoggedIn={setIsLoggedIn} />, requiresAuth: false },
+    { path: "/registro", element: <SignInPage setIsLoggedIn={setIsLoggedIn} />, requiresAuth: false },
+    { path: "*", element: <ErrorPage />, requiresAuth: true },
+  ];
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+        { routes.map( route => {
+          return <Route
+              key={ route.path }
+              path={ route.path }
+              element={ !isLoggedIn && route.requiresAuth ? <Navigate to="/login" /> : route.element }
+            />
+          } )}
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
