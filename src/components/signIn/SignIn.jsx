@@ -13,6 +13,10 @@ const Login = () => {
           <h2 className="text-xl md:text-3xl font-bold leading-tight mt-12">Crea tu cuenta</h2>
           <form className="mt-6" action="#" method="POST">
             <div>
+              <label className="block text-gray-700">Nombre de usuario</label>
+              <input type="text" name="username" id="username" placeholder="Ingrese su nombre de usuario" className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required/>
+            </div>
+            <div>
               <label className="block text-gray-700">Correo electrónico </label>
               <input type="email" name="email" id="email" placeholder="Ingrese su correo" className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required/>
             </div>
