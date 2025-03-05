@@ -41,6 +41,17 @@
     font-weight: 700; /* Asume bold si no hay otros pesos */
 }
 
+@theme{
+    --color-bgClaro: #F2F2F2;
+    --color-bgOscuro1: #353b48;
+    --color-footer: #1b1f28;
+    --color-rojoLogo: #ed1a3b;
+    --color-verdeLogo: #0db14c;
+    --color-amarilloLogo: #fdb913;
+    --color-grisLogo: #58595b;
+    --color-navbarOscuro: #0D1B2A;
+}
+
 html {
     font-family: "Omnes", sans-serif;
 }
