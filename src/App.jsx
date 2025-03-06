@@ -1,18 +1,22 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 
 import HomePage from "./pages/home";
-import ErrorPage  from './pages/404';
+import ErrorPage  from "./pages/404";
 import LoginPage from "./pages/login";
 import SignInPage from "./pages/signIn";
+import OrdersPage from "./pages/pedido/pedido";
+import EditOrder from "./pages/pedido/editarPedido";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // BORRAR ALV
+  const [isLoggedIn, setIsLoggedIn] = useState(true);  // Cambia esto según tu lógica de autenticación
 
   const routes = [
-    { path: '/', element: <HomePage />, requiresAuth: true },
+    { path: "/", element: <HomePage />, requiresAuth: true },
     { path: "/login", element: <LoginPage setIsLoggedIn={setIsLoggedIn} />, requiresAuth: false },
     { path: "/registro", element: <SignInPage setIsLoggedIn={setIsLoggedIn} />, requiresAuth: false },
+    { path: "/pedido/:id", element: <OrdersPage />, requiresAuth: true },
+    { path: "/pedido/:id/editar", element: <EditOrder />, requiresAuth: true },
     { path: "*", element: <ErrorPage />, requiresAuth: true },
   ];
 
