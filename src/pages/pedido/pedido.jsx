@@ -7,6 +7,7 @@ import GroupButtons from "components/buttons/ButtonsForOrderPage";
 
 const HomePage = ( props ) => {
   const { id } = useParams();
+  const disabled = props || props.lenght == 0;
   return (
       <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -17,7 +18,7 @@ const HomePage = ( props ) => {
           data={pedidoData} 
         />
         <div className="flex justify-center">
-          <GroupButtons disabled={props || props.lenght == 0}/>
+          <GroupButtons disabled={disabled}/>
         </div>
       </main>
       <Footer />
