@@ -7,6 +7,7 @@ import LoginPage from "./pages/login";
 import SignInPage from "./pages/signIn";
 import OrdersPage from "./pages/pedido/pedido";
 import EditOrder from "./pages/pedido/editarPedido";
+import NewOrder from "./pages/pedido/nuevoPedido";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);  // Cambia esto según tu lógica de autenticación
@@ -17,6 +18,7 @@ function App() {
     { path: "/registro", element: <SignInPage setIsLoggedIn={setIsLoggedIn} />, requiresAuth: false },
     { path: "/pedido/:id", element: <OrdersPage />, requiresAuth: true },
     { path: "/pedido/:id/editar", element: <EditOrder />, requiresAuth: true },
+    { path: "/crearPedido", element: <NewOrder />, requiresAuth: true },
     { path: "*", element: <ErrorPage />, requiresAuth: true },
   ];
 
