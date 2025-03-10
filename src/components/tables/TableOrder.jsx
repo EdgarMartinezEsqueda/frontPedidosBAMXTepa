@@ -1,31 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const TableComponent = ({ 
-  mode = 'view', // 'view' | 'edit' | 'create'
+  mode = 'view',
   data = [],
-  comunidades = [], // Solo necesario en modo create
+  comunidades = [], 
   onDataChange 
 }) => {
+  useEffect(() => {
+    if (mode === 'create' && comunidades.length > 0 && data.length === 1) {
+      const initialData = comunidades.map(comunidad => ({
+        idComunidad: comunidad.id,
+        comunidad: comunidad.nombre,
+        encargada: comunidad.jefa,
+        contacto: comunidad.contacto,
+        despensasConCosto: 0,
+        despensasMedioCosto: 0,
+        despensasSinCosto: 0,
+        despensasApadrinadas: 0,
+        arpilladas: false,
+        observaciones: ''
+      }));
+      onDataChange(initialData);
+    }
+  }, [mode, comunidades, data, onDataChange]);
+
   const handleChange = (index, field, value) => {
     const newData = [...data];
     newData[index][field] = value;
     onDataChange(newData);
   };
-
-  const handleComunidadChange = (index, comunidadId) => {
-    const selectedComunidad = comunidades.find(c => c.id === comunidadId);
-    if (!selectedComunidad) return;
-
-    const newData = [...data];
-    newData[index] = {
-      ...newData[index],
-      comunidad: selectedComunidad.nombre,
-      encargada: selectedComunidad.encargada,
-      contacto: selectedComunidad.contacto
-    };
-    onDataChange(newData);
-  };
-
+  
   return (
     <section className="container px-4 mx-auto md:py-4">
       <div className="flex flex-col">
@@ -65,7 +69,8 @@ const TableComponent = ({
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                  {!data || data.length === 0 ? (
+                  { !data || data.length === 0 
+                  ? (
                     <tr>
                       <td colSpan="9" className="px-4 py-4 text-sm text-center text-gray-500 dark:text-gray-400">
                         No hay datos disponibles.
@@ -75,31 +80,18 @@ const TableComponent = ({
                     data.map((item, index) => (
                       <tr key={index}>
                         {/* Comunidad */}
-                        <td className="py-4 px-4 text-sm whitespace-nowrap">
-                          {mode === 'create' ? (
-                            <select
-                              value={item.comunidadId || ''}
-                              onChange={(e) => handleComunidadChange(index, e.target.value)}
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            >
-                              <option value="">Seleccionar</option>
-                              {comunidades.map(comunidad => (
-                                <option key={comunidad.id} value={comunidad.id}>
-                                  {comunidad.nombre}
-                                </option>
-                              ))}
-                            </select>
-                          ) : item.comunidad}
+                        <td className="py-4 px-4 text-sm whitespace-nowrap text-white">
+                          <h3> {item.comunidad } </h3>
                         </td>
 
                         {/* Encargada */}
-                        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                          {mode === 'create' ? item.encargada : item.encargada}
+                        <td className="px-4 py-4 text-sm whitespace-nowrap text-white">
+                          <h3> { item.encargada } </h3>
                         </td>
 
                         {/* Contacto */}
-                        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                          {mode === 'create' ? item.contacto : item.contacto}
+                        <td className="px-4 py-4 text-sm whitespace-nowrap text-white">
+                          <h3> { item.contacto } </h3>
                         </td>
 
                         {/* Campos numéricos editables */}
@@ -110,6 +102,7 @@ const TableComponent = ({
                             ) : (
                               <input
                                 type="number"
+                                min="0"
                                 value={item[field] || 0}
                                 onChange={(e) => handleChange(index, field, parseInt(e.target.value))}
                                 className="w-20 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
