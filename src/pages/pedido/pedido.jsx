@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 
 import Navbar from "components/navbar/Navbar";
 import Footer from "components/footer/Footer";
-import TableOrder from "components/tables/TableOrder";
+import TableOrder from "components/tables/orders/TableOrder";
 import GroupButtons from "components/buttons/ButtonsForOrderPage";
 
 const HomePage = ( props ) => {

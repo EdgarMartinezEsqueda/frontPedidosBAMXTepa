@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Navbar from "components/navbar/Navbar";
 import Footer from "components/footer/Footer";
-import TableOrder from "components/tables/TableOrder";
+import TableOrder from "components/tables/orders/TableOrder";
 import AcceptButton from "components/buttons/Accept";
 import SelectRuta from "components/selects/SelectRuta";
 
