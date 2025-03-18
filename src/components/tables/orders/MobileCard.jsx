@@ -41,7 +41,7 @@ const MobileCard = ({ item, index, mode, handleChange }) => {
               type="checkbox"
               checked={item.arpilladas || false}
               onChange={(e) => handleChange(index, 'arpilladas', e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded mr-10"
+              className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded mr-8"
             />
           )}
         </div>
