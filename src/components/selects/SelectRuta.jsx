@@ -4,7 +4,7 @@ const SelectRuta = ({ rutas = [], value, onChange }) => {
       <select
         name="HeadlineAct"
         id="HeadlineAct"
-        className="border-gray-300 text-amarilloLogo"
+        className="border-gray-300 text-amarilloLogo text-center"
         onChange={onChange}
         value={value}
       >
