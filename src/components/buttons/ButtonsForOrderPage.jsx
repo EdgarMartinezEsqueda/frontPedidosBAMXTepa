@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router";
 import { CiEdit } from "react-icons/ci";
 
-const ButtonGroup = ({ disabled = false }) => {
+const ButtonGroup = ({ disabled }) => {
   const navigate = useNavigate();
-
   const handleClick = () => {
     navigate("editar"); // Redirige a la ruta relativa "editar"
   };
@@ -16,7 +15,7 @@ const ButtonGroup = ({ disabled = false }) => {
           ${
             disabled
               ? "text-gray-400 cursor-not-allowed opacity-50 dark:text-gray-500"
-              : `text-gray-600 dark:text-white cursor-pointer ${button.bg}`
+              : "text-gray-600 dark:text-white cursor-pointer hover:bg-amarilloLogo hover:text-black"
           }`}
         onClick={handleClick}>
         < CiEdit className="text-2xl"/>
