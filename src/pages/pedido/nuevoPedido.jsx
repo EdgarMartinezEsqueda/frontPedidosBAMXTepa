@@ -66,12 +66,13 @@ const NewOrder = ( props ) => {
             onChange={(e) => setSelectedRutaId(Number(e.target.value))} />
         </h2>
         {/* Fecha de entrega */}
-        <div className="flex justify-center my-4">
+        <div className="flex justify-center items-center my-4">
+          <label htmlFor="fechaEntrega" className="block text-md px-2">Fecha de entrega: </label>
           <input 
             type="date" 
             value={fechaEntrega}
             onChange={(e) => setFechaEntrega(e.target.value)}
-            className="border p-2 rounded"
+            className="border p-2 rounded text-center"
             required
           />
         </div>
@@ -85,7 +86,7 @@ const NewOrder = ( props ) => {
         
         <div className="flex justify-center items-center flex-col max-w-md m-auto">
           <h2 htmlFor="devueltas" className="block font-bold text-2xl text-rojoLogo">Total despensas</h2>
-          <h3 className="relative flex items-center mt-2 text-amarilloLogo text-xl font-bold">
+          <h3 className="relative flex items-center text-amarilloLogo text-xl font-bold">
             {newPedido.reduce((total, pedido) => {
               return total + 
                 (pedido.despensasConCosto || 0) + 
@@ -94,6 +95,18 @@ const NewOrder = ( props ) => {
                 (pedido.despensasApadrinadas || 0);
             }, 0)}
           </h3>
+          <h2 htmlFor="devueltas" className="block text-md text-grisLogo">
+            <strong className="text-amarilloLogo">
+              {newPedido.reduce((total, pedido) => {
+                return pedido.arpilladas 
+                  ? total + 
+                    (pedido.despensasConCosto || 0) + 
+                    (pedido.despensasMedioCosto || 0) + 
+                    (pedido.despensasSinCosto || 0) + 
+                    (pedido.despensasApadrinadas || 0)
+                  : total;
+              }, 0)}
+            </strong> Arpilladas</h2>
         </div>
 
         <div className="flex justify-center py-4">
