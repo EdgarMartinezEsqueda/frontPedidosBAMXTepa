@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useAuth } from "context/AuthContext";
 
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 
-const Navbar = ({ rol, username }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { user, logout } = useAuth();
+
+  const rol = user.data.rol;
+  const username = user.data.username;
 
   // Definición de enlaces y permisos
   const menuItems = [
-    { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen"] },
-    { text: "Nuevo pedido", roles: ["Direccion", "Ts"] },
-    { text: "Generar reportes", roles: ["Direccion"] },
-    { text: "Gestión de usuarios", roles: ["Direccion"] },
+    { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen"], link: "/" },
+    { text: "Nuevo pedido", roles: ["Direccion", "Ts"], link: "/crearPedido" },
+    { text: "Generar reportes", roles: ["Direccion"], link: "/reportes" },
+    { text: "Gestión de usuarios", roles: ["Direccion"], link: "/usuarios" },
   ];
 
   // Filtrar enlaces según el rol
@@ -45,7 +52,7 @@ const Navbar = ({ rol, username }) => {
               {filteredLinks.map((link) => (
                 <a
                   key={link.text}
-                  href="#"
+                  href={link.link}
                   className="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   {link.text}
@@ -53,15 +60,38 @@ const Navbar = ({ rol, username }) => {
               ))}
             </div>
             <div className="flex items-center mt-4 lg:mt-0">
-              <button type="button" className="flex items-center focus:outline-none" aria-label="toggle profile dropdown" >
-                <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full">
-                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="object-cover w-full h-full" alt="avatar" />
-                </div>
-                <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                  { username ?? "Usuario"}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center focus:outline-none cursor-pointer"
+                aria-label="toggle profile dropdown"
+              >
+                <h3 className=" text-gray-700 dark:text-gray-200">
+                  Bienvenido: <strong>{username ?? "Usuario"}</strong>
                 </h3>
               </button>
+
+              {isDropdownOpen && (
+                <dialog 
+                  ref={dropdownRef}
+                  open={isDropdownOpen}
+                  className="absolute right-0 z-30 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+                  onClose={() => setIsDropdownOpen(false)}
+                >
+                  <div className="py-1" role="menu">
+                    <button
+                      onClick={logout}
+                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                      role="menuitem"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </dialog>
+              )}
             </div>
+          </div>
           </div>
         </div>
       </div>
