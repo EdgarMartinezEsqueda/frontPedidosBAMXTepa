@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { FaAngleDown } from "react-icons/fa6";
-import useClickOutside from 'hooks/useClickOutside';
+import useClickOutside from "hooks/useClickOutside";
 
 const DateFilter = ({ onDateChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
 
@@ -18,8 +18,8 @@ const DateFilter = ({ onDateChange }) => {
   }, [startDate, endDate]);
 
   const handleReset = () => {
-    setStartDate('');
-    setEndDate('');
+    setStartDate("");
+    setEndDate("");
     setIsOpen(false);
   };
 
@@ -35,7 +35,7 @@ const DateFilter = ({ onDateChange }) => {
         className="flex items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600 cursor-pointer"
       >
         <span className="text-sm font-medium">Fecha</span>
-        <span className={`transition ${isOpen ? 'rotate-180' : ''}`}>
+        <span className={`transition ${isOpen ? "rotate-180" : ""}`}>
           <FaAngleDown />
         </span>
       </button>
@@ -43,13 +43,13 @@ const DateFilter = ({ onDateChange }) => {
       <dialog
         ref={dialogRef}
         open={isOpen}
-        className={`z-50 fixed sm:absolute start-0 sm:start-auto mt-2 shadow-lg ${ isOpen ? 'block' : 'hidden' } w-[95vw] max-w-[384px] sm:w-96 top-1/2 sm:top-auto -translate-y-1/2 sm:translate-y-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0`}
+        className={`z-50 fixed sm:absolute start-0 sm:start-auto mt-2 shadow-lg ${ isOpen ? "block" : "hidden" } w-[95vw] max-w-[384px] sm:w-96 top-1/2 sm:top-auto -translate-y-1/2 sm:translate-y-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0`}
         onCancel={() => setIsOpen(false)}
       >
         <div className="w-96 rounded-sm border border-gray-200 bg-white">
           <header className="flex items-center justify-between p-4">
             <span className="text-sm text-gray-700">
-              {(startDate || endDate) ? 'Rango seleccionado' : 'Sin fechas'}
+              {(startDate || endDate) ? "Rango seleccionado" : "Sin fechas"}
             </span>
             <button
               type="button"

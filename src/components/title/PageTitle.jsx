@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 const PageTitle = ({ title, children }) => {
   useEffect(() => {

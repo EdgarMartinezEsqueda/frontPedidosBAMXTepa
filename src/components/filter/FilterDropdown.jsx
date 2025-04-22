@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import useClickOutside from 'hooks/useClickOutside';
+import React, { useState, useEffect, useRef } from "react";
+import useClickOutside from "hooks/useClickOutside";
 import { FaAngleDown } from "react-icons/fa6";
 
 const FilterDropdown = ({
@@ -10,7 +10,7 @@ const FilterDropdown = ({
   showSearch = true
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState(allItems);
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
@@ -38,7 +38,7 @@ const FilterDropdown = ({
 
   const handleReset = () => {
     onSelectionChange([]);
-    setSearchTerm('');
+    setSearchTerm("");
   };
 
   const toggleDialog = () => {
@@ -53,7 +53,7 @@ const FilterDropdown = ({
         className="flex items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600 w-full sm:w-auto cursor-pointer"
       >
         <span className="text-sm font-medium ">{title}</span>
-        <span className={`transition ${isOpen ? 'rotate-180' : ''}`}>
+        <span className={`transition ${isOpen ? "rotate-180" : ""}`}>
           <FaAngleDown />
         </span>
       </button>
@@ -61,7 +61,7 @@ const FilterDropdown = ({
       <dialog
         ref={dialogRef}
         open={isOpen}
-        className={`z-50 fixed sm:absolute start-0 sm:start-auto mt-2 shadow-lg ${ isOpen ? 'block' : 'hidden' } w-[95vw] max-w-[384px] sm:w-96 top-1/3 sm:top-auto -translate-y-1/2 sm:translate-y-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0`}
+        className={`z-50 fixed sm:absolute start-0 sm:start-auto mt-2 shadow-lg ${ isOpen ? "block" : "hidden" } w-[95vw] max-w-[384px] sm:w-96 top-1/3 sm:top-auto -translate-y-1/2 sm:translate-y-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0`}
         onCancel={() => setIsOpen(false)}
       >
         <div className="w-96 rounded-sm border border-gray-200 bg-white">

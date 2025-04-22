@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -15,10 +15,10 @@ api.interceptors.response.use(
   response => response.data,
   error => {
     const status = error.response?.status;
-    const isPublicRoute = ['/login', '/registro'].includes(window.location.pathname);
+    const isPublicRoute = ["/login", "/registro"].includes(window.location.pathname);
 
     if (status === 401 && !isPublicRoute) {
-      window.location.href = '/login'; // Forzar recarga completa para limpiar estados
+      window.location.href = "/login"; // Forzar recarga completa para limpiar estados
     }
     
     return Promise.reject(error);
@@ -28,7 +28,7 @@ api.interceptors.response.use(
 // Función de logout
 export const logout = async () => {
   try {
-    await api.post('/auth/logout');
+    await api.post("/auth/logout");
   } catch (error) {
     console.error("Error durante logout:", error);
   } finally {
@@ -36,7 +36,7 @@ export const logout = async () => {
     if (typeof window !== "undefined") {
       window.localStorage.clear();
       window.sessionStorage.clear();
-      window.location.href = '/login'; // Forzar recarga limpia
+      window.location.href = "/login"; // Forzar recarga limpia
     }
   }
 };
