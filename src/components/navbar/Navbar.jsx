@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useAuth } from "context/AuthContext";
 
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
@@ -9,6 +10,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const rol = user.data.rol;
   const username = user.data.username;
@@ -82,6 +84,13 @@ const Navbar = () => {
                   onClose={() => setIsDropdownOpen(false)}
                 >
                   <div className="py-1" role="menu">
+                    <button
+                      onClick={() => navigate(`/usuarios/${user.data.id}`)}
+                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                      role="menuitem"
+                    >
+                      Perfil
+                    </button>
                     <button
                       onClick={logout}
                       className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
