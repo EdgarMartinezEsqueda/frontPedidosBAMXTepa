@@ -59,3 +59,34 @@ html {
 h1 {
     font-family: "Locator", sans-serif;
 }
+
+/* Ocultar las partes de las horas */
+.rbc-time-gutter,
+.rbc-time-header-gutter,
+.rbc-timeslot-group {
+    display: none !important;
+}
+
+/* Ajustar la estructura del calendario */
+.rbc-time-content {
+    display: none !important;
+}
+
+/* Estirar mucho más el All Day */
+.rbc-allday-cell {
+    min-height: 425px; /* <-- Aquí se puede hacer mas grande el calendario */
+    height: 425px;
+    border: 1px solid #ddd;
+}
+
+/* Opcional: Ajustar el ancho del evento dentro del all-day */
+.rbc-event {
+    margin: 5px 0; /* Espaciado arriba y abajo */
+}
+
+@media (max-width: 768px) {
+    .rbc-allday-cell {
+      min-height: 370px;
+      height: 37opx;
+    }
+  }
