@@ -15,10 +15,12 @@ const Navbar = () => {
 
   // Definición de enlaces y permisos
   const menuItems = [
-    { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen"], link: "/" },
-    { text: "Nuevo pedido", roles: ["Direccion", "Ts"], link: "/crearPedido" },
+    { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen", "Coordinadora"], link: "/" },
+    { text: "Nuevo pedido", roles: ["Direccion", "Ts", "Coordinadora"], link: "/pedido/nuevo" },
     { text: "Generar reportes", roles: ["Direccion"], link: "/reportes" },
     { text: "Gestión de usuarios", roles: ["Direccion"], link: "/usuarios" },
+    { text: "Ver rutas", roles: ["Direccion", "Coordinadora", "Ts"], link: "/rutas" },
+    { text: "Ver comunidades", roles: ["Direccion", "Coordinadora", "Ts"], link: "/comunidades" },
   ];
 
   // Filtrar enlaces según el rol
@@ -53,7 +55,7 @@ const Navbar = () => {
                 <a
                   key={link.text}
                   href={link.link}
-                  className="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 text-center"
                 >
                   {link.text}
                 </a>
