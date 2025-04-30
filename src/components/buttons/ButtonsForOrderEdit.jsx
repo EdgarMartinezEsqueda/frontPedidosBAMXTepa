@@ -1,35 +1,50 @@
-import { GrStatusGood } from "react-icons/gr";
+// components/buttons/ButtonsForOrderEdit.jsx
+import { IoIosDoneAll } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
+import { FaRegSave } from "react-icons/fa";
 
-const ButtonGroup = ({ disabled = true }) => {  // Recibimos prop disabled
+const ButtonGroup = ({ disabled, onSave, onFinalize, onDelete }) => {
   const buttons = [
     {
-      label: "Finalizar",
-      icon: <GrStatusGood className="text-2xl" />,
+      label: "Guardar",
+      icon: <FaRegSave className="text-2xl" />,
       bg: "hover:bg-verdeLogo",
-    }, {
+      action: onSave,
+    },
+    {
+      label: "Finalizar",
+      icon: <IoIosDoneAll className="text-2xl" />,
+      bg: "hover:bg-amarilloLogo",
+      action: onFinalize,
+      hide: !onFinalize,
+    },
+    {
       label: "Borrar",
       icon: <MdDeleteOutline className="text-2xl" />,
       bg: "hover:bg-rojoLogo",
+      action: onDelete,
     },
   ];
 
   return (
-    <div className="flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 dark:border-gray-700 dark:divide-gray-700">
+    <div className="flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900">
       {buttons.map((button, index) => (
-        <button
-          key={index}
-          disabled={disabled}
-          className={`flex items-center px-4 py-2 text-sm font-medium transition-colors duration-200 sm:text-base sm:px-6 gap-x-3
-            ${
-              disabled
-                ? "text-gray-400 cursor-not-allowed opacity-50 dark:text-gray-500"
-                : `text-gray-600 dark:text-white cursor-pointer ${button.bg}`
-            }`}
-        >
-          {button.icon}
-          <span>{button.label}</span>
-        </button>
+        !button.hide && (
+          <button
+            key={index}
+            disabled={disabled}
+            onClick={button.action}
+            className={`flex items-center px-4 py-2 transition-colors duration-200 gap-x-3 cursor-pointer
+              ${
+                disabled
+                  ? "text-gray-400 cursor-not-allowed"
+                  : `text-gray-600 dark:text-white ${button.bg}`
+              }`}
+          >
+            {button.icon}
+            <span>{button.label}</span>
+          </button>
+        )
       ))}
     </div>
   );

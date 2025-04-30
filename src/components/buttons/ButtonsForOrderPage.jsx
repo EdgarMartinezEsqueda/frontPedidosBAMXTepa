@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
 import { CiEdit } from "react-icons/ci";
 
-const ButtonGroup = ({ disabled }) => {
+const ButtonGroup = ({ disabled, id }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("editar"); // Redirige a la ruta relativa "editar"
+    navigate(`/pedido/editar/${id}`); // Redirige a la ruta relativa "editar"
   };
 
   return (
