@@ -6,7 +6,7 @@ import { useAuth } from "context/AuthContext";
 import api from "lib/axios";
 
 import logo from "assets/logo/logo.png";
-import image from "assets/login.webp";
+import image from "assets/logIn.webp";
 
 const Login = () => {
   const [formData, setFormData] = useState({
