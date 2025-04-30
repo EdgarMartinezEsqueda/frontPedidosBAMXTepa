@@ -4,11 +4,11 @@ import Footer from "components/footer/Footer";
 
 const ErrorPage = () =>{
     return (
-      <>
+      <div className="min-h-screen flex flex-col justify-between">
         <Navbar/>
         <Error404/>
         <Footer/>
-      </>
+      </div>
     );
 };
 
