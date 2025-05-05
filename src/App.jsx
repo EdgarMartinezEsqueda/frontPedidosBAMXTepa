@@ -14,6 +14,7 @@ import NewRoute from "./pages/ruta/nuevaRuta";
 import EditRoute from "./pages/ruta/editarRuta";
 import Ruta from "./pages/ruta/ruta";
 import Communities from "./pages/comunidad/comunidades";
+import Community from "./pages/comunidad/comunidad";
 import NewCommunity from "./pages/comunidad/nuevaComunidad";
 import EditCommunity from "./pages/comunidad/editarComunidad";
 import Users from "./pages/admin/usuarios/usuarios";
@@ -59,6 +60,7 @@ function App() {
     { path: "/usuarios/:id", element: <EditUser />, requiresAuth: true, title: "Editar usuario", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora"], resource: RESOURCES.USUARIOS, action: "read", checkOwnership: true },
 
     { path: "/comunidades", element: <Communities />, requiresAuth: true, title: "Comunidades", allowedRoles: ["Direccion", "Coordinadora", "Ts", "Almacen"] },
+    { path: "/comunidades/:id", element: <Community />, requiresAuth: true, title: "Comunidad", allowedRoles: ["Direccion", "Coordinadora", "Ts", "Almacen"] },
     { path: "/comunidades/nuevo", element: <NewCommunity />, requiresAuth: true, title: "Nueva comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/comunidades/editar/:id", element: <EditCommunity />, requiresAuth: true, title: "Editar comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
 
