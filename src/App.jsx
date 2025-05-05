@@ -106,13 +106,6 @@ function App() {
               key={route.path}
               path={route.path}
               element={
-                console.log({
-                path: route.path,
-                requiresAuth: route.requiresAuth,
-                user: !!user,
-                checkAccess: checkAccess(route, user),
-                location: location.pathname,
-              }) ||
                 // Si el usuario está autenticado y la ruta no requiere autenticación, redirige a "/"
                 user && !route.requiresAuth ? (
                   <Navigate to="/" replace />

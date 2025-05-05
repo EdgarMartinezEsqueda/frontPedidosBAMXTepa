@@ -11,11 +11,12 @@ const ForgotPassword = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (email) => api.post("/auth/forgotPassword", { email }),
     onSuccess: () => {
-      toast.success("Se ha enviado un enlace de recuperación a tu correo");
+      toast.success("Si el correo existe, se ha enviado un enlace de recuperación");
       navigate("/login");
     },
     onError: (error) => {
-      toast.error(error.response?.data?.error?.message || "Error al enviar el enlace");
+      toast.success("Si el correo existe, se ha enviado un enlace de recuperación");
+      navigate("/login");
     }
   });
 
