@@ -27,6 +27,7 @@ import ReportesComunidades from "./pages/admin/reportes/comunidades.jsx"
 import ReportesApadrinadas from "./pages/admin/reportes/apadrinadas.jsx"
 
 import { useAuth } from "context/AuthContext";
+import { ThemeProvider } from "context/ThemeContext";
 import { RESOURCES } from "utils/permisos";
 
 function App() {
@@ -58,7 +59,6 @@ function App() {
     { path: "/comunidades", element: <Communities />, requiresAuth: true, title: "Comunidades", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/comunidades/nuevo", element: <NewCommunity />, requiresAuth: true, title: "Nueva comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/comunidades/editar/:id", element: <EditCommunity />, requiresAuth: true, title: "Editar comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
-    //{ path: "/comunidades/:id", element: <Community />, requiresAuth: true, title: "Editar comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
 
     { path: "/rutas", element: <AllRoutes />, requiresAuth: true, title: "Gestionar Rutas", allowedRoles: ["Direccion", "Ts", "Coordinadora"] },
     { path: "/rutas/nuevo", element: <NewRoute />, requiresAuth: true, title: "Nueva ruta", allowedRoles: ["Direccion", "Coordinadora"] },
@@ -72,7 +72,7 @@ function App() {
     return <div>Cargando...</div>; // Muestra un spinner aquí
   }
 
-  const checkAccess = (route, user, { resourceOwnerId } = {}) => {
+  const checkAccess = (route, user) => {
     if (route.requiresAuth && !user) return false;
   
     if (route.allowedRoles && !route.allowedRoles.includes(user?.data.rol)) return false;
@@ -87,7 +87,7 @@ function App() {
   };
   
   return (
-    <>
+    <ThemeProvider>
       <Routes>
         {routes.map((route) => {
           const ownerId = getResourceOwnerId(route);
@@ -110,7 +110,7 @@ function App() {
         )}
       </Routes>
       <Toaster position="bottom-right" />
-    </>
+    </ThemeProvider>
   );
 }
 
