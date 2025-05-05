@@ -132,7 +132,14 @@ const Login = () => {
               Únete
             </Link>
           </p>
-          
+          <p className="mt-4">
+            <Link 
+              to="/forgotPassword" 
+              className="text-blue-500 hover:text-blue-700 font-semibold"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </p>
           <p className="text-sm text-gray-500 mt-12">
             &copy; {new Date().getFullYear()} Banco Diocesano de Alimentos de los Altos
           </p>
