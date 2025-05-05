@@ -49,7 +49,7 @@ const Pagination = ({
           page === "..." 
             ? <span
                 key={`ellipsis-${index}`}
-                className="flex-shrink-0 px-2 py-1 text-stone-800 cursor-default"
+                className="flex-shrink-0 px-2 py-1 text-stone-800 dark:text-white cursor-default"
               >
                 ...
               </span>
@@ -59,7 +59,7 @@ const Pagination = ({
                 className={`flex-shrink-0 inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in text-xs sm:text-sm min-w-[28px] min-h-[28px] sm:min-w-[38px] sm:min-h-[38px] rounded-md ${
                   currentPage === page
                     ? "bg-stone-800 border-stone-800 text-stone-50 shadow-sm hover:shadow-md hover:bg-stone-700"
-                    : "bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 cursor-pointer"
+                    : "bg-transparent border-transparent text-stone-800 dark:text-white hover:bg-stone-800/5 dark:hover:bg-white/5 cursor-pointer"
                 }`}
                 aria-current={currentPage === page ? "page" : undefined}
               >

@@ -32,7 +32,7 @@ const DateFilter = ({ onDateChange }) => {
       <button
         ref={triggerRef}
         onClick={toggleDialog}
-        className="flex items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600 cursor-pointer"
+        className="flex items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 dark:text-white transition hover:border-gray-600 dark:hover:border-gray-300 cursor-pointer"
       >
         <span className="text-sm font-medium">Fecha</span>
         <span className={`transition ${isOpen ? "rotate-180" : ""}`}>

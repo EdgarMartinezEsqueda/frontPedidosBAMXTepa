@@ -58,11 +58,11 @@ function App() {
     { path: "/usuarios/editar/:id", element: <EditUser />, requiresAuth: true, title: "Editar usuario", allowedRoles: ["Direccion"], resource: RESOURCES.USUARIOS, action: "update", checkOwnership: true },
     { path: "/usuarios/:id", element: <EditUser />, requiresAuth: true, title: "Editar usuario", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora"], resource: RESOURCES.USUARIOS, action: "read", checkOwnership: true },
 
-    { path: "/comunidades", element: <Communities />, requiresAuth: true, title: "Comunidades", allowedRoles: ["Direccion", "Coordinadora"] },
+    { path: "/comunidades", element: <Communities />, requiresAuth: true, title: "Comunidades", allowedRoles: ["Direccion", "Coordinadora", "Ts", "Almacen"] },
     { path: "/comunidades/nuevo", element: <NewCommunity />, requiresAuth: true, title: "Nueva comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/comunidades/editar/:id", element: <EditCommunity />, requiresAuth: true, title: "Editar comunidad", allowedRoles: ["Direccion", "Coordinadora"] },
 
-    { path: "/rutas", element: <AllRoutes />, requiresAuth: true, title: "Gestionar Rutas", allowedRoles: ["Direccion", "Ts", "Coordinadora"] },
+    { path: "/rutas", element: <AllRoutes />, requiresAuth: true, title: "Gestionar Rutas", allowedRoles: ["Direccion", "Ts", "Coordinadora", "Almacen"] },
     { path: "/rutas/nuevo", element: <NewRoute />, requiresAuth: true, title: "Nueva ruta", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/rutas/editar/:id", element: <EditRoute />, requiresAuth: true, title: "Editar ruta", allowedRoles: ["Direccion", "Coordinadora"] },
     { path: "/rutas/:id", element: <Ruta />, requiresAuth: true, title: "Ruta", allowedRoles: ["Direccion", "Ts", "Coordinadora"] },
@@ -97,12 +97,13 @@ function App() {
   
   return (
     <ThemeProvider>
-      <Routes>
-        {routes.map((route) => {
-          const ownerId = getResourceOwnerId(route);
-          
-          return (
-            <Route
+      <div className="min-h-screen dark:bg-slate-800 dark:text-white">
+        <Routes>
+          {routes.map((route) => {
+            const ownerId = getResourceOwnerId(route);
+            
+            return (
+              <Route
               key={route.path}
               path={route.path}
               element={
@@ -117,10 +118,11 @@ function App() {
                   <PageTitle title={route.title}>{route.element}</PageTitle>
                 )
               }
-            />);
-          }
-        )}
-      </Routes>
+              />);
+            }
+          )}
+        </Routes>
+      </div>
       <Toaster position="bottom-right" />
     </ThemeProvider>
   );

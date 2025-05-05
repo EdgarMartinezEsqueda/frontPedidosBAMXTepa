@@ -32,6 +32,9 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
+
+        <h2 className="text-center mt-4 font-bold text-2xl text-verdeLogo">Pedidos</h2>
+
         <FilterOrders 
           workers={workers}
           setWorkers={setWorkers}
