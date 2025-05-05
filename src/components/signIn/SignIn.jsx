@@ -69,7 +69,7 @@ const SignUp = () => {
         />
       </div>
 
-      <div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto lg:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
+      <div className="bg-white dark:bg-gray-700 dark:text-white w-full md:max-w-md lg:max-w-full md:mx-auto lg:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
         <div className="w-full h-150">
           <Link to="/">
             <img 
@@ -85,7 +85,7 @@ const SignUp = () => {
 
           <form className="mt-6" onSubmit={handleSubmit} >
             <div>
-              <label htmlFor="username" className="block text-gray-700">
+              <label htmlFor="username" className="block text-gray-700 dark:text-white">
                 Nombre de usuario
               </label>
               <input
@@ -93,14 +93,14 @@ const SignUp = () => {
                 name="username"
                 id="username"
                 value={formData.username}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
               />
             </div>
 
             <div className="mt-4">
-              <label htmlFor="email" className="block text-gray-700">
+              <label htmlFor="email" className="block text-gray-700 dark:text-white">
                 Correo electrónico
               </label>
               <input
@@ -108,7 +108,7 @@ const SignUp = () => {
                 name="email"
                 id="email"
                 value={formData.email}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
               />
@@ -118,7 +118,7 @@ const SignUp = () => {
             </div>
 
             <div className="mt-4">
-              <label htmlFor="password" className="block text-gray-700">
+              <label htmlFor="password" className="block text-gray-700 dark:text-white">
                 Contraseña
               </label>
               <input
@@ -127,14 +127,14 @@ const SignUp = () => {
                 id="password"
                 value={formData.password}
                 minLength="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
               />
             </div>
 
             <div className="mt-4">
-              <label htmlFor="confirmPassword" className="block text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-white">
                 Confirmar contraseña
               </label>
               <input
@@ -143,7 +143,7 @@ const SignUp = () => {
                 id="confirmPassword"
                 value={formData.confirmPassword}
                 minLength="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
               />
@@ -163,7 +163,7 @@ const SignUp = () => {
             </button>
           </form>
 
-          <p className="mt-8 text-black">
+          <p className="mt-8 text-black dark:text-white">
             ¿Ya tienes una cuenta?{" "}
             <Link to="/login" className="text-blue-500 hover:text-blue-700 font-semibold">
               Inicia sesión
