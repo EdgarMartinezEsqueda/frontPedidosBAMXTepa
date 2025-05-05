@@ -163,7 +163,7 @@ const SignUp = () => {
             </button>
           </form>
 
-          <p className="mt-8">
+          <p className="mt-8 text-black">
             ¿Ya tienes una cuenta?{" "}
             <Link to="/login" className="text-blue-500 hover:text-blue-700 font-semibold">
               Inicia sesión

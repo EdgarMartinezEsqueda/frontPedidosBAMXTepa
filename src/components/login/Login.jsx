@@ -123,7 +123,7 @@ const Login = () => {
             )}
           </form>
 
-          <p className="mt-8">
+          <p className="mt-8 text-black">
             ¿No tienes una cuenta?{" "}
             <Link 
               to="/registro" 
