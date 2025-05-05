@@ -127,7 +127,7 @@ const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities 
                         <td className="block md:table-cell px-4 py-4 text-sm whitespace-nowrap relative even:bg-gray-50 dark:even:bg-gray-700/30">
                           <div className="flex justify-end md:justify-center gap-x-6 text-lg ">
                             <button
-                              className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none"
+                              className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none cursor-pointer"
                               onClick={() => navigate(`/comunidades/${item.id}`)}
                             >
                               <FaRegEye />
@@ -135,7 +135,7 @@ const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities 
                             
                             {hasPermission(user.data, RESOURCES.COMUNIDADES, "update") && (
                               <button
-                                className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none"
+                                className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none cursor-pointer"
                                 onClick={() => navigate(`/comunidades/editar/${item.id}`)}
                               >
                                 <FaRegEdit />
@@ -144,7 +144,7 @@ const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities 
 
                             {hasPermission(user.data, RESOURCES.COMUNIDADES, "delete") && (
                               <button
-                                className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none"
+                                className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer"
                                 onClick={() => deleteMutation.mutate(item.id)}
                               >
                                 <MdDeleteOutline />
