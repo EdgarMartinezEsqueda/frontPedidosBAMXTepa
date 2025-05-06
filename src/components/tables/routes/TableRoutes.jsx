@@ -1,17 +1,12 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "context/AuthContext";
-import { useNavigate } from "react-router";
-import api from "lib/axios";
-import { hasPermission, RESOURCES } from "utils/permisos";
+import toast from "react-hot-toast";
 
-import { FaRegEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEye } from "react-icons/fa";
+import api from "lib/axios";
+import ActionButtons from "components/buttons/ActionButtons";
+import { RESOURCES } from "utils/permisos";
 
 const TableComponent = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
@@ -80,39 +75,13 @@ const TableComponent = () => {
                   </td>
 
                   {/* Acciones */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm whitespace-nowrap lg:!bg-inherit bg-gray-50 dark:bg-gray-800 text-center" >
-                    <div className="flex justify-between lg:justify-center items-center gap-x-6 text-lg">
-                      <span className="text-gray-400 lg:hidden"></span>
-                      <div className="flex gap-x-6">
-                        {/* Ver más */}
-                        <button 
-                          className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none cursor-pointer"
-                          onClick={() => navigate(`/rutas/${item.id}`)} 
-                        >
-                          <FaRegEye />
-                        </button>
-
-                        {/* Editar */}
-                        {hasPermission(user.data, RESOURCES.RUTAS, "update") && (
-                          <button 
-                            className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none cursor-pointer"
-                            onClick={() => navigate(`/rutas/editar/${item.id}`)}
-                          >
-                            <FaRegEdit />
-                          </button>
-                        )}
-
-                        {/* Eliminar */}
-                        {hasPermission(user.data, RESOURCES.RUTAS, "delete") && (
-                          <button 
-                            className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer"
-                            onClick={() => deleteMutation.mutate(item.id)}
-                          >
-                            <MdDeleteOutline />
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  <td className="block lg:table-cell px-4 py-4 text-sm whitespace-nowrap lg:!bg-inherit bg-gray-50 dark:bg-gray-800 text-center">
+                    <ActionButtons
+                      item={item}
+                      resource={RESOURCES.RUTAS}
+                      basePath="rutas"
+                      onDelete={deleteMutation.mutate}
+                    />
                   </td>
                 </tr>
               ))

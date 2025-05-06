@@ -1,15 +1,12 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "context/AuthContext";
-import { useNavigate } from "react-router";
-import api from "lib/axios";
+import toast from "react-hot-toast";
 
-import { FaRegEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEye } from "react-icons/fa";
+import api from "lib/axios";
+import ActionButtons from "components/buttons/ActionButtons";
+import { RESOURCES } from "utils/permisos";
 
 const TableComponent = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
@@ -86,30 +83,13 @@ const TableComponent = () => {
                         </td>
                         {/* Opciones */}
                         <td className="px-4 py-4 text-sm whitespace-nowrap">
-                          <div className="flex justify-center gap-x-6 text-lg">
-                            {/* Ver mas sobre la Usuario */}
-                            <button 
-                              className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none  cursor-pointer"
-                              onClick={() => navigate(`/usuarios/${item.id}`)} 
-                            >
-                              <FaRegEye />
-                            </button>
-                            {/* Editar Usuario */}
-                            <button 
-                              className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none  cursor-pointer"
-                              onClick={() => navigate(`/usuarios/editar/${item.id}`)}
-                            >
-                              <FaRegEdit />
-                            </button>
-                            {/* Eliminar Usuario */}
-                            <button 
-                              className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none  cursor-pointer"
-                              onClick={() => deleteMutation.mutate(item.id)}
-                            >
-                              <MdDeleteOutline />
-                            </button>
-                          </div>
-                      </td>
+                          <ActionButtons
+                            item={item}
+                            resource={RESOURCES.USUARIOS}
+                            basePath="usuarios"
+                            onDelete={deleteMutation.mutate}
+                          />
+                        </td>
                     </tr>
                     ))
                   )}

@@ -1,19 +1,12 @@
 import React, { useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 import api from "lib/axios";
-import { useAuth } from "context/AuthContext";
-
-import { hasPermission, RESOURCES } from "utils/permisos";
-import { FaRegEdit, FaRegEye } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import ActionButtons from "components/buttons/ActionButtons";
+import { RESOURCES } from "utils/permisos";
 
 const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => {
-  const { user } = useAuth();
-  
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   // Obtiene TODOS los datos paginados del servidor
@@ -135,41 +128,14 @@ const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => 
                   </td>
 
                   {/* Opciones */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm whitespace-nowrap lg:!bg-inherit bg-gray-50 dark:bg-gray-800 text-center" >
-                    <div className="flex justify-between lg:justify-center items-center gap-x-6 text-lg">
-                      <span className="text-gray-400 lg:hidden">Opciones</span>
-                      <div className="flex gap-x-6">
-                        <button
-                          className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none cursor-pointer"
-                          onClick={() => navigate(`/pedido/${item.id}`)}
-                        >
-                          <FaRegEye />
-                        </button>
-                        
-                        {hasPermission(user.data, RESOURCES.PEDIDOS, "update", item.idTs ) && (
-                          <button
-                            className={`text-gray-500 transition-colors duration-200 dark:text-gray-300 focus:outline-none ${
-                              item.estado === "finalizado" 
-                                ? "cursor-not-allowed" 
-                                : "cursor-pointer hover:text-yellow-500"
-                            }`}
-                            onClick={() => navigate(`/pedido/editar/${item.id}`)}
-                            disabled={item.estado === "finalizado"}
-                          >
-                            <FaRegEdit />
-                          </button>
-                        )}
-
-                        {hasPermission(user.data, RESOURCES.PEDIDOS, "delete", item.idTs ) && (
-                          <button
-                            className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer"
-                            onClick={() => deleteMutation.mutate(item.id)}
-                          >
-                            <MdDeleteOutline />
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  <td className="block md:table-cell px-4 py-4 text-sm whitespace-nowrap relative even:bg-gray-50 dark:even:bg-gray-700/30">
+                    <ActionButtons
+                      item={item}
+                      resource={RESOURCES.PEDIDOS}
+                      basePath="pedido"
+                      onDelete={deleteMutation.mutate}
+                      getEditCondition={(item) => item.estado === "finalizado"}
+                    />
                   </td>
                 </tr>
               ))

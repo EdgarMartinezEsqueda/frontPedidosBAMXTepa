@@ -1,18 +1,12 @@
 import React, { useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 import api from "lib/axios";
-import { useAuth } from "context/AuthContext";
-
-import { hasPermission, RESOURCES } from "utils/permisos";
-import { FaRegEdit, FaRegEye } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import ActionButtons from "components/buttons/ActionButtons";
+import { RESOURCES } from "utils/permisos";
 
 const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities }) => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   // Obtiene TODOS los datos paginados del servidor
@@ -125,32 +119,12 @@ const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities 
                           {item.nombreRuta}
                         </td>
                         <td className="block md:table-cell px-4 py-4 text-sm whitespace-nowrap relative even:bg-gray-50 dark:even:bg-gray-700/30">
-                          <div className="flex justify-end md:justify-center gap-x-6 text-lg ">
-                            <button
-                              className="text-gray-500 transition-colors duration-200 dark:hover:text-green-500 dark:text-gray-300 hover:text-green-500 focus:outline-none cursor-pointer"
-                              onClick={() => navigate(`/comunidades/${item.id}`)}
-                            >
-                              <FaRegEye />
-                            </button>
-                            
-                            {hasPermission(user.data, RESOURCES.COMUNIDADES, "update") && (
-                              <button
-                                className="text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none cursor-pointer"
-                                onClick={() => navigate(`/comunidades/editar/${item.id}`)}
-                              >
-                                <FaRegEdit />
-                              </button>
-                            )}
-
-                            {hasPermission(user.data, RESOURCES.COMUNIDADES, "delete") && (
-                              <button
-                                className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer"
-                                onClick={() => deleteMutation.mutate(item.id)}
-                              >
-                                <MdDeleteOutline />
-                              </button>
-                            )}
-                          </div>
+                          <ActionButtons 
+                            item={item}
+                            resource={RESOURCES.COMUNIDADES}
+                            basePath="comunidades"
+                            onDelete={deleteMutation.mutate}
+                          />
                         </td>
                       </tr>
                     ))
