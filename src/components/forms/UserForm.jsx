@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import AcceptButton from "components/buttons/Accept";
 
+import { useAuth } from "context/AuthContext";
+import { hasPermission } from "utils/permisos";
+
 const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
   const initialData = {
     username: "",
@@ -9,6 +12,8 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
     confirmPassword: "",
     verificado: false
   };
+
+  const { user } = useAuth();
 
   const [userData, setUserData] = useState(initialData);
   const [clientErrors, setClientErrors] = useState({});
@@ -114,6 +119,25 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
         />
         {clientErrors.email && <p className="text-red-500 text-sm">{clientErrors.email}</p>}
       </div>
+
+      {user.data.rol === "Direccion" && 
+        (<div>
+          <label htmlFor="rol" className="block text-sm font-medium text-gray-700">
+            Rol
+          </label>
+          <select 
+            name="rol" 
+            id="rol"
+            value={userData.rol}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-verdeLogo focus:outline-none focus:ring-2 focus:ring-verdeLogo"
+            autoComplete="off">
+              <option value="Direccion">Dirección</option>
+              <option value="Coordinadora">Coordinadora</option>
+              <option value="Ts">Trabajador Social</option>
+              <option value="Almacen">Almacen</option>
+            </select>
+        </div>) }
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
