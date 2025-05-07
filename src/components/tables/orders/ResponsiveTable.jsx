@@ -67,6 +67,7 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
                       value={item[field]}
                       onChange={(e) => handleChange(rowIndex, field, parseInt(e.target.value))}
                       className="w-16 px-2 py-1 rounded bg-white text-black md:text-center"
+                      min={0}
                     />
                   ) : (
                     <span>{item[field]}</span>
