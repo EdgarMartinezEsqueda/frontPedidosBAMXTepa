@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useAuth } from "context/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+
+import { useAuth } from "context/AuthContext";
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -13,6 +15,7 @@ import Select from "components/selects/Select";
 const NewOrder = () => {
   const { user } = useAuth();
   const idTs = user.data?.id;
+  const navigate = useNavigate();
 
   const [selectedRutaId, setSelectedRutaId] = useState("");
   const [fechaEntrega, setFechaEntrega] = useState("");
@@ -44,11 +47,9 @@ const NewOrder = () => {
       const { data } = await api.post("/pedidos", newOrder);
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Pedido creado exitosamente");
-      setSelectedRutaId("");
-      setFechaEntrega("");
-      setNewPedido([]);
+      navigate(`/pedido/${data.id}`);
     },
     onError: (error) => {
       const message = error.response?.data?.error.message || "Error al crear pedido";
@@ -127,7 +128,7 @@ const NewOrder = () => {
                   (pedido.despensasApadrinadas || 0);
                 }, 0)}
               </h3>
-              <h2 htmlFor="devueltas" className="block text-md text-grisLogo">
+              <h2 htmlFor="devueltas" className="block text-md text-grisLogo dark:text-white">
                 <strong className="text-amarilloLogo">
                   {newPedido.pedidoComunidad.reduce((total, pedido) => {
                     return pedido.arpilladas 
