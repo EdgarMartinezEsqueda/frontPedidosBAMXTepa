@@ -6,7 +6,8 @@ import {
   FaTruck,
   FaUsers,
   FaMapMarked,
-  FaHeart
+  FaHeart,
+  FaMoneyBill
 } from "react-icons/fa";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
@@ -22,6 +23,7 @@ const Sidebar = () => {
     { label: "Trabajadores Sociales", icon: <FaUsers />, to: "/reportes/ts" },
     { label: "Comunidades", icon: <FaMapMarked />, to: "/reportes/comunidades" },
     { label: "Apadrinadas", icon: <FaHeart />, to: "/reportes/apadrinadas" },
+    { label: "Económico", icon: <FaMoneyBill />, to: "/reportes/economico" },
   ];
 
   return (
