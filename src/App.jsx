@@ -26,6 +26,7 @@ import ReportesTS from "./pages/admin/reportes/ts.jsx";
 import ReportesDespensas from "./pages/admin/reportes/despensas.jsx";
 import ReportesComunidades from "./pages/admin/reportes/comunidades.jsx";
 import ReportesApadrinadas from "./pages/admin/reportes/apadrinadas.jsx";
+import ReportesEconomicos from "./pages/admin/reportes/economico.jsx";
 import ForgotPassword from "./pages/auth/forgotPassword.jsx";
 import ResetPassword from "./pages/auth/resetPassword.jsx";
 
@@ -53,6 +54,7 @@ function App() {
     { path: "/reportes/despensas", element: <ReportesDespensas />, requiresAuth: true, title: "Reportes despensas", allowedRoles: ["Direccion"] },
     { path: "/reportes/comunidades", element: <ReportesComunidades />, requiresAuth: true, title: "Reportes comunidades", allowedRoles: ["Direccion"] },
     { path: "/reportes/apadrinadas", element: <ReportesApadrinadas />, requiresAuth: true, title: "Reportes apadrinadas", allowedRoles: ["Direccion"] },
+    { path: "/reportes/economico", element: <ReportesEconomicos />, requiresAuth: true, title: "Reportes económicos", allowedRoles: ["Direccion"] },
 
     { path: "/usuarios", element: <Users />, requiresAuth: true, title: "Usuarios", allowedRoles: ["Direccion"] },
     { path: "/usuarios/nuevo", element: <NewUser />, requiresAuth: true, title: "Nuevo usuario", allowedRoles: ["Direccion"] },
