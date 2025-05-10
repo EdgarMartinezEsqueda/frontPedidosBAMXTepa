@@ -37,7 +37,7 @@ const VerComunidad = () => {
       </div>
     );
   }
-
+  
   if (isError) {
     return (
       <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -64,6 +64,7 @@ const VerComunidad = () => {
         <div className="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
           <InfoRow label="Municipio" value={municipioNombre} />
           <InfoRow label="Ruta asociada" value={rutaNombre} />
+          <InfoRow label="Costo de paquete alimentario" value={`$${comunidad.costoPaquete}`} />
           <InfoRow label="Jefa de comunidad" value={comunidad.jefa || 'No especificada'} />
           <InfoRow label="Contacto" value={comunidad.contacto || 'No especificado'} />
           <InfoRow label="Dirección/Enlace" value={comunidad.direccion || 'No especificada'} />

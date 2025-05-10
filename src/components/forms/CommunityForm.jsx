@@ -24,7 +24,8 @@ const CommunityForm = ({ onSubmit, isSubmitting, existingCommunity }) => {
         jefa: existingCommunity.jefa || "",
         contacto: existingCommunity.contacto || "",
         direccion: existingCommunity.direccion || "",
-        idRuta: existingCommunity.idRuta || ""
+        idRuta: existingCommunity.idRuta || "",
+        costoPaquete: existingCommunity.costoPaquete || ""
       });
     }
   }, [existingCommunity]);
@@ -103,6 +104,26 @@ const CommunityForm = ({ onSubmit, isSubmitting, existingCommunity }) => {
             placeholder="Selecciona una ruta"
           />
         </div>
+
+        {/* Costo de Paquete */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Costo de paquete alimentario
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-2.5 text-gray-500 select-none">$</span>
+            <input
+              type="number"
+              min={0}
+              name="costoPaquete"
+              onChange={handleChange}
+              value={formData.costoPaquete}
+              required
+              className="pl-7 pr-3 py-2 w-full border border-gray-300 shadow-sm focus:border-verdeLogo focus:ring-2 focus:ring-verdeLogo focus:outline-none transition duration-150 ease-in-out rounded-md"
+            />
+          </div>
+        </div>
+
 
         {/* Campos restantes */}
         {["jefa", "contacto", "direccion"].map((field) => (
