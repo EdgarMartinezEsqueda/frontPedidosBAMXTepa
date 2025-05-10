@@ -135,6 +135,7 @@ const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => 
                       basePath="pedido"
                       onDelete={deleteMutation.mutate}
                       getEditCondition={(item) => item.estado === "finalizado"}
+                      getDeleteCondition={(item) => item.estado === "finalizado"}
                     />
                   </td>
                 </tr>

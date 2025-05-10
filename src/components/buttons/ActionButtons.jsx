@@ -11,6 +11,7 @@ const ActionButtons = ({
   basePath,
   onDelete,
   getEditCondition = () => false,
+  getDeleteCondition = () => false,
   showView = true
 }) => {
   const { user } = useAuth();
@@ -43,8 +44,13 @@ const ActionButtons = ({
 
       {hasPermission(user.data, resource, "delete") && (
         <button
-          className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer"
-          onClick={() => onDelete(item.id)}
+          className={`text-gray-500 transition-colors duration-200 dark:text-gray-300 focus:outline-none ${
+            getDeleteCondition(item) 
+              ? "cursor-not-allowed" 
+              : "cursor-pointer hover:text-red-500 dark:hover:text-red-500"
+          }`}
+          onClick={() => !getDeleteCondition(item) && onDelete(item.id)}
+          disabled={getDeleteCondition(item)}
         >
           <MdDeleteOutline />
         </button>
