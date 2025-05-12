@@ -17,7 +17,7 @@ const SignUp = () => {
 
   const { mutate, isError, isPending, error, isSuccess } = useMutation({
     mutationFn: async (userData) => {
-      const response = await fetch("/api/auth/registro", {
+      const response = await fetch("/auth/registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
