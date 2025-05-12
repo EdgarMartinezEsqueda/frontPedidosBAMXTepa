@@ -24,7 +24,7 @@ const Login = () => {
   }, [formData]);
   
   const { mutate, isError, isPending, error } = useMutation({
-    mutationFn: (credentials) => api.post("/auth/login", credentials),
+    mutationFn: (credentials) => api.post(`${import.meta.env.VITE_API_URL}/auth/login`, credentials),
     onSuccess: (userData) => {
       login(userData);
       toast.success("Sesión iniciada correctamente");

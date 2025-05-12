@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const userData = await api.get("/auth/me");
+        const userData = await api.get(`${import.meta.env.VITE_API_URL}/auth/me`);
         setUser(userData);
       } catch (error) {
         console.error("Error en /auth/me:", error.response?.status, error.response?.data);
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout");
+      await api.post(`${import.meta.env.VITE_API_URL}/auth/logout`);
     } finally {
       setUser(null);
       // Limpiar caché de axios y redirigir SIN recargar

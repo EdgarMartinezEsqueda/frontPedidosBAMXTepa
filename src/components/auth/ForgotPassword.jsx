@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (email) => api.post("/auth/forgotPassword", { email }),
+    mutationFn: (email) => api.post(`${import.meta.env.VITE_API_URL}/auth/forgotPassword`, { email }),
     onSuccess: () => {
       toast.success("Si el correo existe, se ha enviado un enlace de recuperación");
       navigate("/login");
