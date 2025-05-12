@@ -11,7 +11,7 @@ const CreateUser = () => {
   const navigate = useNavigate();
   
   const { mutate, isPending } = useMutation({
-    mutationFn: (userData) => api.post(`${import.meta.env.VITE_API_URL}/auth/registro`, userData),
+    mutationFn: (userData) => api.post("/auth/registro", userData),
     onSuccess: () => {
       toast.success("Usuario creado exitosamente");
       navigate("/usuarios");

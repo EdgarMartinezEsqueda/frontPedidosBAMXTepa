@@ -32,7 +32,7 @@ api.interceptors.response.use(
 // Función de logout
 export const logout = async () => {
   try {
-    await api.post(`${import.meta.env.VITE_API_URL}/auth/logout`);
+    await api.post("/auth/logout");
   } catch (error) {
     console.error("Error durante logout:", error);
   } finally {
