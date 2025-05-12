@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import { Link } from "react-router";
+import api from "lib/axios";
 
 import logo from "assets/logo/logo.png";
 import image from "assets/signIn.webp";
@@ -14,32 +15,7 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [clientErrors, setClientErrors] = useState({});
-
-  const { mutate, isError, isPending, error, isSuccess } = useMutation({
-    mutationFn: async (userData) => {
-      const response = await fetch("/auth/registro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Registration failed");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      toast.success(
-        "Usuario registrado correctamente.\nEspera aprobación del administrador.",
-        { duration: 7000 }
-      );
-      setFormData({ username: "", email: "", password: "", confirmPassword: "" });
-    },
-    onError: (error) => {
-      toast.error(error.message || "Error durante el registro");
-    },
-  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const errors = {};
@@ -49,6 +25,27 @@ const SignUp = () => {
     setClientErrors(errors);
   }, [formData]);
 
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: (userData) => api.post("/auth/registro", userData),
+    onSuccess: () => {
+      toast.success(
+        "Usuario registrado correctamente. Espera aprobación del administrador.",
+        { duration: 7000 }
+      );
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      navigate("/login");
+    },
+    onError: (error) => {
+      const message = error.response?.data?.error?.message || "Error durante el registro";
+      toast.error(message);
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(clientErrors).length > 0) return;
@@ -56,15 +53,15 @@ const SignUp = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
       <div className="bg-blue-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-        <img 
-          src={image} 
-          alt="Ilustración de registro" 
+        <img
+          src={image}
+          alt="Ilustración de registro"
           className="w-full h-full object-cover object-top"
         />
       </div>
@@ -72,18 +69,18 @@ const SignUp = () => {
       <div className="bg-white dark:bg-gray-700 dark:text-white w-full md:max-w-md lg:max-w-full md:mx-auto lg:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
         <div className="w-full h-150">
           <Link to="/">
-            <img 
-              src={logo} 
-              alt="Logo de Banco de Alimentos" 
+            <img
+              src={logo}
+              alt="Logo del Banco de Alimentos"
               className="w-24 object-cover"
             />
           </Link>
-          
+
           <h2 className="text-xl md:text-3xl font-bold leading-tight mt-12">
             Crea tu cuenta
           </h2>
 
-          <form className="mt-6" onSubmit={handleSubmit} >
+          <form className="mt-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="username" className="block text-gray-700 dark:text-white">
                 Nombre de usuario
@@ -148,28 +145,33 @@ const SignUp = () => {
                 onChange={handleInputChange}
               />
               {clientErrors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">
-                  {clientErrors.confirmPassword}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{clientErrors.confirmPassword}</p>
               )}
             </div>
 
             <button
               type="submit"
               disabled={isPending || Object.keys(clientErrors).length > 0}
-              className="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isPending ? "Registrando..." : "Crear cuenta"}
+              {isPending ? "Registrando..." : "Registrarse"}
             </button>
+
+            {isError && (
+              <p className="text-red-500 text-center mt-4"> "Error durante el registro" </p>
+            )}
           </form>
 
           <p className="mt-8 text-black dark:text-white">
             ¿Ya tienes una cuenta?{" "}
-            <Link to="/login" className="text-blue-500 hover:text-blue-700 font-semibold">
+            <Link
+              to="/login"
+              className="text-blue-500 hover:text-blue-700 font-semibold"
+            >
               Inicia sesión
             </Link>
           </p>
-          
+
           <p className="text-sm text-gray-500 mt-12">
             &copy; {new Date().getFullYear()} Banco Diocesano de Alimentos de los Altos
           </p>
