@@ -15,11 +15,12 @@ api.interceptors.response.use(
   response => response.data,
   error => {
     const status = error.response?.status;
+    const currentPath = window.location.pathname;
     const isPublicRoute = [
       "/login",
       "/registro",
       "/forgotPassword"
-    ].includes(pathname) || pathname.startsWith("/resetPassword/");
+    ].some(route => currentPath === route) || currentPath.startsWith("/resetPassword/");
 
     if (status === 401 && !isPublicRoute) {
       window.location.href = "/login"; // Forzar recarga completa para limpiar estados
