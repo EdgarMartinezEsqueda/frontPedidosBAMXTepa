@@ -2,7 +2,9 @@ export const ROLES = {
   DIRECCION: "Direccion",
   COORDINADORA: "Coordinadora",
   TS: "Ts",
-  ALMACEN: "Almacen"
+  ALMACEN: "Almacen",
+  CONSEJO: "Consejo",
+  CONTABILIDAD: "Contabilidad"
 };
 
 export const RESOURCES = {
@@ -19,6 +21,15 @@ const permissions = {
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
     [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"]
   },
+  [ROLES.DIRECCION]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
+    [RESOURCES.PEDIDOS]: ["read"],
+    [RESOURCES.RUTAS]: ["read"],
+    [RESOURCES.COMUNIDADES]: ["read"],
+    [RESOURCES.USUARIOS]: {
+      actions: ["read", "update" ], // Solo puede modificar su propio usuario
+      ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
+    }
+  },
   [ROLES.COORDINADORA]: {
     [RESOURCES.PEDIDOS]: {
       actions: ["create", "read", "update", "delete"], // Solo puede modificar sus propios pedidos, si se requiere se puede dejar igual que direccion para que pueda ver modificar todos los pedidos
@@ -27,7 +38,7 @@ const permissions = {
     [RESOURCES.RUTAS]: ["create", "read", "update", "delete"],
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
     [RESOURCES.USUARIOS]: {
-      actions: ["read", "update" ], // Solo puede modificar su propios usuario
+      actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     }
   },
@@ -39,7 +50,7 @@ const permissions = {
     [RESOURCES.RUTAS]: ["read"],
     [RESOURCES.COMUNIDADES]: ["read"],
     [RESOURCES.USUARIOS]: {
-      actions: ["read", "update" ], // Solo puede modificar su propios usuario
+      actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     }
   },
@@ -48,7 +59,16 @@ const permissions = {
     [RESOURCES.RUTAS]: ["read"],
     [RESOURCES.COMUNIDADES]: ["read"],
     [RESOURCES.USUARIOS]: {
-      actions: ["read", "update" ], // Solo puede modificar su propios usuario
+      actions: ["read", "update" ], // Solo puede modificar su propio usuario
+      ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
+    }
+  },
+  [ROLES.CONTABILIDAD]: {
+    [RESOURCES.PEDIDOS]: ["read"],
+    [RESOURCES.RUTAS]: ["read"],
+    [RESOURCES.COMUNIDADES]: ["read"],
+    [RESOURCES.USUARIOS]: {
+      actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     }
   }

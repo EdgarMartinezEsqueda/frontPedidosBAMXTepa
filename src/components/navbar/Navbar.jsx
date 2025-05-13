@@ -18,16 +18,16 @@ const Navbar = () => {
 
   const rol = user.data.rol;
   const username = user.data.username;
-
+  console.log(rol)
   // Definición de enlaces y permisos
   const menuItems = [
-    { text: "Calendario", roles: ["Direccion", "Ts", "Almacen", "Coordinadora"], link: "/calendario" },
-    { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen", "Coordinadora"], link: "/" },
+    { text: "Calendario", roles: ["Direccion", "Consejo",  "Ts", "Almacen", "Coordinadora", "Contabilidad"], link: "/calendario" },
+    { text: "Pedidos", roles: ["Direccion", "Consejo",  "Ts", "Almacen", "Coordinadora", "Contabilidad"], link: "/" },
     { text: "Nuevo pedido", roles: ["Direccion", "Ts", "Coordinadora"], link: "/pedido/nuevo" },
-    { text: "Generar reportes", roles: ["Direccion"], link: "/reportes" },
-    { text: "Gestión de usuarios", roles: ["Direccion"], link: "/usuarios" },
-    { text: "Ver rutas", roles: ["Direccion", "Coordinadora", "Ts"], link: "/rutas" },
-    { text: "Ver comunidades", roles: ["Direccion", "Coordinadora", "Ts"], link: "/comunidades" },
+    { text: "Reportes", roles: ["Direccion", "Consejo", "Contabilidad", "Almacen"] , link: "/reportes" },
+    { text: "Usuarios", roles: ["Direccion"] , link: "/usuarios" },
+    { text: "Rutas", roles: ["Direccion", "Consejo",  "Coordinadora", "Ts", "Contabilidad", "Almacen"], link: "/rutas" },
+    { text: "Comunidades", roles: ["Direccion", "Consejo",  "Coordinadora", "Ts", "Contabilidad", "Almacen"], link: "/comunidades" },
   ];
 
   // Filtrar enlaces según el rol
