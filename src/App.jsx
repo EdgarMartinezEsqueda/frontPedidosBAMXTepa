@@ -9,6 +9,7 @@ import SignInPage from "./pages/signIn";
 import OrdersPage from "./pages/pedido/pedido";
 import EditOrder from "./pages/pedido/editarPedido";
 import NewOrder from "./pages/pedido/nuevoPedido";
+import OrdersByTs from "./pages/pedido/pedidosPorTs.jsx";
 import AllRoutes from "./pages/ruta/rutas";
 import NewRoute from "./pages/ruta/nuevaRuta";
 import EditRoute from "./pages/ruta/editarRuta";
@@ -29,6 +30,7 @@ import ReportesApadrinadas from "./pages/admin/reportes/apadrinadas.jsx";
 import ReportesEconomicos from "./pages/admin/reportes/economico.jsx";
 import ForgotPassword from "./pages/auth/forgotPassword.jsx";
 import ResetPassword from "./pages/auth/resetPassword.jsx";
+import Calendar from "./pages/pedido/calendario.jsx";
 
 import { useAuth } from "context/AuthContext";
 import { ThemeProvider } from "context/ThemeContext";
@@ -47,6 +49,7 @@ function App() {
     { path: "/pedido/nuevo", element: <NewOrder />, requiresAuth: true, title: "Crear Pedido", allowedRoles: ["Direccion", "Ts", "Coordinadora"] },
     { path: "/pedido/:id", element: <OrdersPage />, requiresAuth: true, title: "Pedido", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora"] },
     { path: "/pedido/editar/:id", element: <EditOrder />, requiresAuth: true, title: "Editar Pedido", allowedRoles: ["Direccion", "Ts", "Coordinadora"], resource: RESOURCES.PEDIDOS, action: "update", checkOwnership: true },
+    { path: "/pedidos/ts/:id", element: <OrdersByTs />, requiresAuth: true, title: "Mis pedidos", allowedRoles: ["Direccion", "Ts", "Coordinadora"], resource: RESOURCES.PEDIDOS, action: "update", checkOwnership: true },
 
     { path: "/reportes", element: <ReportesResumen />, requiresAuth: true, title: "Resumen general", allowedRoles: ["Direccion"] },
     { path: "/reportes/rutas", element: <ReportesRutas />, requiresAuth: true, title: "Reportes rutas", allowedRoles: ["Direccion"] },
@@ -73,6 +76,8 @@ function App() {
 
     { path: "/forgotPassword", element: <ForgotPassword />, requiresAuth: false, title: "Recuperar contraseña"},
     { path: "/resetPassword/:token", element: <ResetPassword />, requiresAuth: false, title: "Cambiar contraseña"},
+
+    { path: "/calendario", element: <Calendar />, requiresAuth: true, title: "Calendario", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora"] },
 
     { path: "*", element: <ErrorPage />, requiresAuth: true, title: "Ha surgido un error", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora"] },
   ];
