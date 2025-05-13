@@ -173,19 +173,21 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
         )}
       </div>
 
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          name="verificado"
-          id="verificado"
-          checked={userData.verificado}
-          onChange={handleInputChange}
-          className="h-4 w-4 text-verdeLogo focus:ring-verdeLogo border-gray-300 rounded"
-        />
-        <label htmlFor="verificado" className="ml-2 block text-sm text-gray-900">
-          Verificado
-        </label>
-      </div>
+      {user.data.rol === "Direccion" && 
+        (<div className="flex items-center">
+          <input
+            type="checkbox"
+            name="verificado"
+            id="verificado"
+            checked={userData.verificado}
+            onChange={handleInputChange}
+            className="h-4 w-4 text-verdeLogo focus:ring-verdeLogo border-gray-300 rounded"
+          />
+          <label htmlFor="verificado" className="ml-2 block text-sm text-gray-900">
+            Verificado
+          </label>
+        </div>) 
+      }
 
       <div className="flex justify-center">
         <AcceptButton 
