@@ -132,10 +132,12 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
             onChange={handleInputChange}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-verdeLogo focus:outline-none focus:ring-2 focus:ring-verdeLogo"
             autoComplete="off">
-              <option value="Direccion">Dirección</option>
-              <option value="Coordinadora">Coordinadora</option>
-              <option value="Ts">Trabajador Social</option>
               <option value="Almacen">Almacen</option>
+              <option value="Consejo">Consejo</option>
+              <option value="Contabilidad">Contabilidad</option>
+              <option value="Coordinadora">Coordinadora</option>
+              <option value="Direccion">Dirección</option>
+              <option value="Ts">Trabajador Social</option>
             </select>
         </div>) }
 
