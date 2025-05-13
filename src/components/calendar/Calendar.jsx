@@ -21,9 +21,9 @@ const localizer = dateFnsLocalizer({
 const CalendarComponent = ({ eventos }) => {
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState("month");
-
+  
   const formattedEvents = eventos.map(evento => ({
-    title: `${evento.ruta} - ${evento.estado.toUpperCase()}`,
+    title: `${evento.ruta} - ${evento.totalDespensas} despensas`,
     start: new Date(evento.fecha),
     end: new Date(evento.fecha),
     allDay: true,
