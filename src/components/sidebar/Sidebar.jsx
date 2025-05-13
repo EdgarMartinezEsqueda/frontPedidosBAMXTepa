@@ -1,22 +1,16 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
-import {
-  FaHome,
-  FaBoxOpen,
-  FaTruck,
-  FaUsers,
-  FaMapMarked,
-  FaHeart,
-  FaMoneyBill
-} from "react-icons/fa";
+import {  FaHome, FaBoxOpen, FaTruck, FaUsers, FaMapMarked, FaHeart, FaMoneyBill } from "react-icons/fa";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-
+import { useAuth } from "context/AuthContext";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
+  const rol = user?.data?.rol;
 
-  const navItems = [
+  const allNavItems = [
     { label: "Resumen", icon: <FaHome />, to: "/reportes" },
     { label: "Despensas", icon: <FaBoxOpen />, to: "/reportes/despensas" },
     { label: "Rutas", icon: <FaTruck />, to: "/reportes/rutas" },
@@ -26,26 +20,53 @@ const Sidebar = () => {
     { label: "Económico", icon: <FaMoneyBill />, to: "/reportes/economico" },
   ];
 
+  const getFilteredItems = () => {
+    switch(rol) {
+      case "Direccion":
+      case "Consejo":
+        return allNavItems;
+      
+      case "Coordinadora":
+      case "Ts":
+        return allNavItems.filter(item => item.label !== "Económico");
+      
+      case "Contabilidad":
+        return allNavItems.filter(item => item.label !== "Trabajadores Sociales");
+
+      // case "Ts":
+      //   return allNavItems.filter(item => item.label !== "Económico" && item.label !== "Trabajadores Sociales" );
+      
+      case "Almacen":
+        return allNavItems.filter(item => 
+          ["Resumen", "Comunidades", "Rutas", "Despensas"].includes(item.label)
+        );
+      
+      default:
+        return [];
+    }
+  };
+
+  const filteredNavItems = getFilteredItems();
+
   return (
     <>
-      {/* Botón para abrir/cerrar el sidebar */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`lg:hidden fixed top-20 left-4 z-50 text-2xl text-gray-700 ${ isOpen ? 'left-68' : 'left-4' }`}
+        className={`lg:hidden fixed top-20 left-4 z-50 text-2xl ${
+          isOpen ? "left-68" : "left-4"
+        }`}
       >
         {isOpen ? <IoIosArrowBack /> : <IoIosArrowForward />}
       </button>
 
-      {/* Sidebar */}
       <div
-        id="sideNav"
         className={`${
           isOpen ? "block" : "hidden"
-        } z-10 lg:block w-64 fixed lg:static h-full lg:h-auto bg-white dark:bg-gray-800 shadow dark:shadow-lg`}
+        } lg:block w-64 fixed lg:static h-full bg-white dark:bg-gray-800 shadow`}
       >
         <div className="p-4 space-y-4">
-          {navItems.map((item) => {
-            const isActive = location.pathname === (item.to);
+          {filteredNavItems.map((item) => {
+            const isActive = location.pathname === item.to;
             return (
               <Link
                 key={item.label}
