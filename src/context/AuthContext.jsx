@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
         const userData = await api.get("/auth/me");
         setUser(userData);
       } catch (error) {
-        console.error("Error en /auth/me:", error.response?.status, error.response?.data);
         setUser(null);
       } finally {
         setLoading(false);

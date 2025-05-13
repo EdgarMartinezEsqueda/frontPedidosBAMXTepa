@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const rol = user.data.rol;
   const username = user.data.username;
-  console.log(rol)
+  
   // Definición de enlaces y permisos
   const menuItems = [
     { text: "Calendario", roles: ["Direccion", "Consejo",  "Ts", "Almacen", "Coordinadora", "Contabilidad"], link: "/calendario" },

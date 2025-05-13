@@ -71,7 +71,7 @@ const ReportEconomico = () => {
   const comunidadesFiltradas = filterData(distribucionComunidades, searchCom);
   const municipiosFiltrados = filterData(distribucionMunicipios, searchMun);
   const rutasFiltradas = filterData(distribucionRutas, searchRuta);
-  console.log(reportesData)
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
