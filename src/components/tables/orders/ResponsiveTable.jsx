@@ -2,6 +2,7 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
   const headers = [
     "Comunidad",
     "Encargada",
+    "Contacto",
     "Con Costo",
     "Medio Costo",
     "Sin Costo",
@@ -50,6 +51,13 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
                 className="block md:table-cell px-4 md:py-3 text-sm text-gray-600 dark:text-gray-300 md:!bg-inherit bg-gray-50 dark:bg-gray-800 relative before:content-[attr(data-th)] md:before:content-none before:block before:text-xs before:text-gray-500 before:mb-1"
               >
                 {item.comunidad.jefa}
+              </td>
+
+              {/* COntacto jefa encargada */}
+              <td
+                className="block md:table-cell px-4 md:py-3 text-sm text-gray-600 dark:text-gray-300 md:!bg-inherit bg-gray-50 dark:bg-gray-800 relative before:content-[attr(data-th)] md:before:content-none before:block before:text-xs before:text-gray-500 before:mb-1"
+              >
+                {item.comunidad.contacto}
               </td>
 
               {/* Campos numéricos */}
