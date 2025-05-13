@@ -50,8 +50,8 @@ const VerComunidad = () => {
     );
   }
 
-  const municipioNombre = municipios.find(m => m.id === comunidad.idMunicipio)?.nombre || 'No especificado';
-  const rutaNombre = rutas.find(r => r.id === comunidad.idRuta)?.nombre || 'No asignada';
+  const municipioNombre = municipios.find(m => m.id === comunidad.idMunicipio)?.nombre || "No especificado";
+  const rutaNombre = rutas.find(r => r.id === comunidad.idRuta)?.nombre || "No asignada";
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -65,9 +65,10 @@ const VerComunidad = () => {
           <InfoRow label="Municipio" value={municipioNombre} />
           <InfoRow label="Ruta asociada" value={rutaNombre} />
           <InfoRow label="Costo de paquete alimentario" value={`$${comunidad.costoPaquete}`} />
-          <InfoRow label="Jefa de comunidad" value={comunidad.jefa || 'No especificada'} />
-          <InfoRow label="Contacto" value={comunidad.contacto || 'No especificado'} />
-          <InfoRow label="Dirección/Enlace" value={comunidad.direccion || 'No especificada'} />
+          <InfoRow label="Jefa de comunidad" value={comunidad.jefa || "No especificada"} />
+          <InfoRow label="Contacto" value={comunidad.contacto || "No especificado"} />
+          <InfoRow label="Dirección/Enlace" value={comunidad.direccion || "No especificada"} />
+          <InfoRow label="Notas" value={comunidad.notas || "Sin notas"} />
         </div>
       </main>
       <Footer />

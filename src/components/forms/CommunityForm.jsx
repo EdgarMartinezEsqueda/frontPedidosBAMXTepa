@@ -12,7 +12,9 @@ const CommunityForm = ({ onSubmit, isSubmitting, existingCommunity }) => {
     jefa: "",
     contacto: "",
     direccion: "",
-    idRuta: ""
+    idRuta: "",
+    notas: "",
+    costoPaquete: 170
   });
 
   // Inicializar datos si estamos editando
@@ -25,7 +27,8 @@ const CommunityForm = ({ onSubmit, isSubmitting, existingCommunity }) => {
         contacto: existingCommunity.contacto || "",
         direccion: existingCommunity.direccion || "",
         idRuta: existingCommunity.idRuta || "",
-        costoPaquete: existingCommunity.costoPaquete || ""
+        costoPaquete: existingCommunity.costoPaquete || "",
+        notas: existingCommunity.notas || ""
       });
     }
   }, [existingCommunity]);
@@ -126,13 +129,14 @@ const CommunityForm = ({ onSubmit, isSubmitting, existingCommunity }) => {
 
 
         {/* Campos restantes */}
-        {["jefa", "contacto", "direccion"].map((field) => (
+        {["jefa", "contacto", "direccion", "notas"].map((field) => (
           <div key={field}>
             <label className="block text-sm font-medium text-gray-700">
               {{
                 jefa: "Jefa de comunidad",
                 contacto: "Contacto de la jefa",
-                direccion: "Dirección o enlace de mapa"
+                direccion: "Dirección o enlace de mapa",
+                notas: "Notas adicionales"
               }[field]}
             </label>
             <input
