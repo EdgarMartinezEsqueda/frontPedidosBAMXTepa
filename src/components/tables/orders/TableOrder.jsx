@@ -27,7 +27,8 @@ const TableComponent = ({
           despensasSinCosto: 0,
           despensasApadrinadas: 0,
           arpilladas: false,
-          observaciones: ""
+          observaciones: "",
+          comite: 0,
         }))
       }
       

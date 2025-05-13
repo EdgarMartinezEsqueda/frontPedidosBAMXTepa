@@ -71,7 +71,8 @@ const NewOrder = () => {
       despensasSinCosto: pedido.despensasSinCosto || 0,
       despensasApadrinadas: pedido.despensasApadrinadas || 0,
       arpilladas: pedido.arpilladas || false,
-      observaciones: pedido.observaciones || ""
+      observaciones: pedido.observaciones || "",
+      comite: pedido.comite || 0,
     }));
 
     mutate({

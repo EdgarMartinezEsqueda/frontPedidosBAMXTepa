@@ -6,6 +6,7 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
     "Medio Costo",
     "Sin Costo",
     "Apadrinadas",
+    "Comité",
     "Arpilladas",
     "Observaciones"
   ];
@@ -52,7 +53,7 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
               </td>
 
               {/* Campos numéricos */}
-              {["despensasCosto", "despensasMedioCosto", "despensasSinCosto", "despensasApadrinadas"].map((field, index) => (
+              {["despensasCosto", "despensasMedioCosto", "despensasSinCosto", "despensasApadrinadas", "comite"].map((field, index) => (
                 <td
                   data-th={headers[index + 2]}
                   className="block md:table-cell px-4 py-2 text-sm relative md:text-center"
