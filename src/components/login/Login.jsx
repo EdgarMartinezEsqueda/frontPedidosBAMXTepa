@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useAuth } from "context/AuthContext";
 import api from "lib/axios";
+import { useTheme } from "context/ThemeContext";
 
-import logo from "assets/logo/logo.png";
 import image from "assets/logIn.webp";
 
 const Login = () => {
@@ -16,6 +16,7 @@ const Login = () => {
   const [clientErrors, setClientErrors] = useState({});
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { isDark } = useTheme();
 
   // Validación en cliente (puedes agregar más validaciones según necesites)
   useEffect(() => {
@@ -54,17 +55,20 @@ const Login = () => {
           className="w-full h-full object-cover"
         />
       </div>
-      
+
       <div className="bg-white dark:bg-gray-700 dark:text-white w-full md:max-w-md lg:max-w-full md:mx-auto lg:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
         <div className="w-full h-100">
           <Link to="/">
             <img 
-              src={logo} 
-              alt="Logo del Banco de Alimentos" 
+              src={isDark 
+                ? "https://bamxtepatitlan.org/assets/logoModoOscuro-BZP1mUxE.png"
+                : "https://bamxtepatitlan.org/assets/logo-B5cTjWox.png"
+              }
+              alt="Logo del Banco de Alimentos"
               className="w-24 object-cover"
             />
           </Link>
-          
+
           <h2 className="text-xl md:text-3xl font-bold leading-tight mt-12">
             Inicia sesión con tu cuenta
           </h2>
@@ -79,7 +83,7 @@ const Login = () => {
                 name="email"
                 id="email"
                 value={formData.email}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
                 autoComplete="email"
@@ -88,7 +92,7 @@ const Login = () => {
                 <p className="text-red-500 text-sm mt-1">{clientErrors.email}</p>
               )}
             </div>
-            
+
             <div className="mt-4">
               <label htmlFor="password" className="block text-gray-700 dark:text-white">
                 Contraseña
@@ -99,7 +103,7 @@ const Login = () => {
                 id="password"
                 value={formData.password}
                 minLength="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
                 autoComplete="current-password"
@@ -113,11 +117,11 @@ const Login = () => {
             >
               {isPending ? "Verificando..." : "Iniciar sesión"}
             </button>
-            
+
             {isError && (
               <p className="text-red-500 text-center mt-4">
-                {error.message.includes("credenciales") 
-                  ? "Credenciales inválidas" 
+                {error.message.includes("credenciales")
+                  ? "Credenciales inválidas"
                   : "Error al iniciar sesión"}
               </p>
             )}
@@ -140,12 +144,13 @@ const Login = () => {
               ¿Olvidaste tu contraseña?
             </Link>
           </p>
-          <p className="text-sm text-gray-500 mt-12">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-12">
             &copy; {new Date().getFullYear()} Banco Diocesano de Alimentos de los Altos
           </p>
         </div>
       </div>
     </section>
+
   );
 };
 

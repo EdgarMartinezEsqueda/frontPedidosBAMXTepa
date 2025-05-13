@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import api from "lib/axios";
+import { useTheme } from "context/ThemeContext";
 
-import logo from "assets/logo/logo.png";
 import image from "assets/signIn.webp";
 
 const SignUp = () => {
@@ -16,6 +16,7 @@ const SignUp = () => {
   });
   const [clientErrors, setClientErrors] = useState({});
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const errors = {};
@@ -70,7 +71,11 @@ const SignUp = () => {
         <div className="w-full h-150">
           <Link to="/">
             <img
-              src={logo}
+              src={
+                isDark
+                  ? "https://bamxtepatitlan.org/assets/logoModoOscuro-BZP1mUxE.png"
+                  : "https://bamxtepatitlan.org/assets/logo-B5cTjWox.png"
+              }
               alt="Logo del Banco de Alimentos"
               className="w-24 object-cover"
             />
@@ -90,9 +95,10 @@ const SignUp = () => {
                 name="username"
                 id="username"
                 value={formData.username}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
+                autoComplete="username"
               />
             </div>
 
@@ -105,9 +111,10 @@ const SignUp = () => {
                 name="email"
                 id="email"
                 value={formData.email}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
+                autoComplete="email"
               />
               {clientErrors.email && (
                 <p className="text-red-500 text-sm mt-1">{clientErrors.email}</p>
@@ -124,9 +131,10 @@ const SignUp = () => {
                 id="password"
                 value={formData.password}
                 minLength="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
+                autoComplete="new-password"
               />
             </div>
 
@@ -139,10 +147,10 @@ const SignUp = () => {
                 name="confirmPassword"
                 id="confirmPassword"
                 value={formData.confirmPassword}
-                minLength="6"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
+                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 mt-2 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-900 focus:outline-none dark:text-white"
                 required
                 onChange={handleInputChange}
+                autoComplete="new-password"
               />
               {clientErrors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">{clientErrors.confirmPassword}</p>
@@ -154,11 +162,13 @@ const SignUp = () => {
               disabled={isPending || Object.keys(clientErrors).length > 0}
               className="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isPending ? "Registrando..." : "Registrarse"}
+              {isPending ? "Registrando..." : "Crear cuenta"}
             </button>
 
             {isError && (
-              <p className="text-red-500 text-center mt-4"> "Error durante el registro" </p>
+              <p className="text-red-500 text-center mt-4">
+                {error.message || "Error al registrar"}
+              </p>
             )}
           </form>
 
@@ -171,8 +181,7 @@ const SignUp = () => {
               Inicia sesión
             </Link>
           </p>
-
-          <p className="text-sm text-gray-500 mt-12">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-12">
             &copy; {new Date().getFullYear()} Banco Diocesano de Alimentos de los Altos
           </p>
         </div>
