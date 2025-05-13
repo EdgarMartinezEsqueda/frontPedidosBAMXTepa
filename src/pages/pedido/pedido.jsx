@@ -9,6 +9,7 @@ import Navbar from "components/navbar/Navbar";
 import Footer from "components/footer/Footer";
 import TableOrder from "components/tables/orders/TableOrder";
 import GroupButtons from "components/buttons/ButtonsForOrderPage";
+import ExportSingleOrderButton from "components/buttons/ExportSingleOrderButton";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -40,9 +41,18 @@ const OrderPage = () => {
       <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        <h2 className="font-bold text-2xl w-full text-center pt-4 text-verdeLogo">Pedido #{ id }</h2>
-        <h2 className="text-md w-full text-center text-rojoLogo">{ pedidoData.ruta.nombre}</h2>
-        <h3 className="text-sm w-full text-center">Hecho por: {pedidoData.usuario.username}</h3>
+          <div className="container px-4 mx-auto mt-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div className="text-center md:text-left">
+                <h2 className="font-bold text-2xl text-verdeLogo">Pedido #{id}</h2>
+                <h2 className="text-md text-rojoLogo">{pedidoData.ruta.nombre}</h2>
+                <h3 className="text-sm">Hecho por: {pedidoData.usuario.username}</h3>
+              </div>
+              <div className="self-center md:self-start">
+                <ExportSingleOrderButton pedido={pedidoData} />
+              </div>
+            </div>
+          </div>
         <TableOrder 
           mode="view"
           data={pedidoData} 
