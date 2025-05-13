@@ -21,6 +21,7 @@ const Navbar = () => {
 
   // Definición de enlaces y permisos
   const menuItems = [
+    { text: "Calendario", roles: ["Direccion", "Ts", "Almacen", "Coordinadora"], link: "/calendario" },
     { text: "Ver pedidos", roles: ["Direccion", "Ts", "Almacen", "Coordinadora"], link: "/" },
     { text: "Nuevo pedido", roles: ["Direccion", "Ts", "Coordinadora"], link: "/pedido/nuevo" },
     { text: "Generar reportes", roles: ["Direccion"], link: "/reportes" },
@@ -98,6 +99,15 @@ const Navbar = () => {
                       >
                         Perfil
                       </button>
+                      { rol !== "Almacen" && rol !== "Contabilidad" && rol !== "Consejo" && (
+                        <button
+                          onClick={() => navigate(`/pedidos/ts/${user.data.id}`)}
+                          className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                          role="menuitem"
+                        >
+                        Mis pedidos
+                        </button>)
+                      }
                       <button
                         onClick={logout}
                         className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
