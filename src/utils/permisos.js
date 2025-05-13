@@ -21,7 +21,7 @@ const permissions = {
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
     [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"]
   },
-  [ROLES.DIRECCION]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
+  [ROLES.CONSEJO]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
     [RESOURCES.PEDIDOS]: ["read"],
     [RESOURCES.RUTAS]: ["read"],
     [RESOURCES.COMUNIDADES]: ["read"],
