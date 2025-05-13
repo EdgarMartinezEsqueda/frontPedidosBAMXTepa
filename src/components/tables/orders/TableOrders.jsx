@@ -28,13 +28,13 @@ const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => 
     return allOrders.filter(order => {
       const matchesUser = filters.usuarios.length === 0 ||  filters.usuarios.includes(order.usuario.username);
       const matchesRoute = filters.rutas.length === 0 ||  filters.rutas.includes(order.ruta.nombre);
-      const matchesMunicipality = filters.estatusPedido.length === 0 ||  filters.estatusPedido.includes(order.estado);
+      const matchesStatus = filters.estatusPedido.length === 0 ||  filters.estatusPedido.includes(order.estado);
       
       const { startDate, endDate } = filters.rangoFechas || {};
       const orderDate = order.fechaEntrega;  // formato "YYYY-MM-DD"
       const matchesDate = (!startDate || orderDate >= startDate) &&  (!endDate || orderDate <= endDate);
     
-      return matchesUser && matchesRoute && matchesMunicipality && matchesDate;
+      return matchesUser && matchesRoute && matchesStatus && matchesDate;
     });
   }, [allOrders, filters]);
 
