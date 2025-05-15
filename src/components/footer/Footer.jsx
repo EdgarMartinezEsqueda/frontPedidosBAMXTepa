@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-
-import { FaFacebook } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { MdSupportAgent } from "react-icons/md"
 
 const Footer = () => {
   return (
@@ -12,7 +9,10 @@ const Footer = () => {
           © {new Date().getFullYear()} Banco Diocesano de Alimentos de los Altos
         </p>
 
-        <div className="flex -mx-2">
+        <div className="flex items-center -mx-2">
+          <a href="/tickets/nuevo" className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-verdeLogo" aria-label="Soporte" >
+            <MdSupportAgent className="text-lg" />
+          </a>
           <a href="https://facebook.com/bamxtepatitlan" target="_blank" rel="noreferrer" className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Facebook" >
             <FaFacebook />
           </a>
