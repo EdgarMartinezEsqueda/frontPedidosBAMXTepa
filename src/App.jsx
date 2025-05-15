@@ -31,6 +31,10 @@ import ReportesEconomicos from "./pages/admin/reportes/economico.jsx";
 import ForgotPassword from "./pages/auth/forgotPassword.jsx";
 import ResetPassword from "./pages/auth/resetPassword.jsx";
 import Calendar from "./pages/pedido/calendario.jsx";
+import Tickets from "./pages/tickets/tickets.jsx";
+import Ticket from "./pages/tickets/ticket.jsx";
+import NewTicket from "./pages/tickets/nuevoTicket.jsx";
+import EditTicket from "./pages/tickets/editarTicket.jsx";
 
 import { useAuth } from "context/AuthContext";
 import { ThemeProvider } from "context/ThemeContext";
@@ -78,6 +82,11 @@ function App() {
     { path: "/resetPassword/:token", element: <ResetPassword />, requiresAuth: false, title: "Cambiar contraseña"},
 
     { path: "/calendario", element: <Calendar />, requiresAuth: true, title: "Calendario", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora", "Consejo", "Contabilidad"] },
+
+    { path: "/tickets", element: <Tickets />, requiresAuth: true, title: "Soporte", allowedRoles: ["Direccion", "Consejo"] },
+    { path: "/tickets/nuevo", element: <NewTicket />, requiresAuth: true, title: "Nuevo ticket", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora", "Consejo", "Contabilidad"] },
+    { path: "/tickets/:id", element: <Ticket />, requiresAuth: true, title: "Ticket", allowedRoles: ["Direccion", "Consejo"] },
+    { path: "/tickets/editar/:id", element: <EditTicket />, requiresAuth: true, title: "Editar ticket", allowedRoles: ["Direccion"] },
 
     { path: "*", element: <ErrorPage />, requiresAuth: true, title: "Ha surgido un error", allowedRoles: ["Direccion", "Ts", "Almacen", "Coordinadora", "Consejo", "Contabilidad"] },
   ];
