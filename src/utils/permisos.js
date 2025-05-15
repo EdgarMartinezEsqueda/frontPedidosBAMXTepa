@@ -19,7 +19,8 @@ const permissions = {
     [RESOURCES.PEDIDOS]: ["create", "read", "update", "delete"],
     [RESOURCES.RUTAS]: ["create", "read", "update", "delete"],
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
-    [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"]
+    [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"],
+    [RESOURCES.TICKETS]: ["create", "read", "update", "delete"]
   },
   [ROLES.CONSEJO]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
     [RESOURCES.PEDIDOS]: ["read"],
@@ -28,7 +29,8 @@ const permissions = {
     [RESOURCES.USUARIOS]: {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
-    }
+    },
+    [RESOURCES.TICKETS]: ["create", "read"]
   },
   [ROLES.COORDINADORA]: {
     [RESOURCES.PEDIDOS]: {
@@ -40,7 +42,8 @@ const permissions = {
     [RESOURCES.USUARIOS]: {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
-    }
+    },
+    [RESOURCES.TICKETS]: ["read"]
   },
   [ROLES.TS]: {
     [RESOURCES.PEDIDOS]: {
@@ -52,7 +55,8 @@ const permissions = {
     [RESOURCES.USUARIOS]: {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
-    }
+    },
+    [RESOURCES.TICKETS]: ["read"]
   },
   [ROLES.ALMACEN]: {
     [RESOURCES.PEDIDOS]: ["read"],
@@ -61,7 +65,8 @@ const permissions = {
     [RESOURCES.USUARIOS]: {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
-    }
+    },
+    [RESOURCES.TICKETS]: ["read"]
   },
   [ROLES.CONTABILIDAD]: {
     [RESOURCES.PEDIDOS]: ["read"],
@@ -70,7 +75,8 @@ const permissions = {
     [RESOURCES.USUARIOS]: {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
-    }
+    },
+    [RESOURCES.TICKETS]: ["read"]
   }
 };
 
