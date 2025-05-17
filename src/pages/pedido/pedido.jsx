@@ -86,9 +86,34 @@ const OrderPage = () => {
             <GroupButtons disabled={ pedidoData.estado === "finalizado" } id={id}/>
           </div>
         }
-        { pedidoData.estado === "finalizado" && 
-          <div className="flex justify-center">
-            <h3>Despensas retornadas a BAMX Tepatitlán <strong className="text-rojoLogo"> {pedidoData.devoluciones ?? 0 }</strong> </h3>
+        {pedidoData.estado === "finalizado" && 
+          <div className="max-w-2xl mx-auto p-4 bg-gray-50 rounded-lg shadow-sm mt-4">
+            <h3 className="text-center text-xl font-bold text-verdeLogo mb-4">
+              Detalles finales
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+              <div className="flex items-center gap-2 justify-center">
+                <span className="font-semibold text-gray-600">
+                  Despensas retornadas:
+                </span>
+                <span className="text-rojoLogo font-bold text-lg">
+                  {pedidoData.devoluciones ?? 0}
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2 justify-center">
+                <span className="font-semibold text-gray-600">
+                  Hora de llegada:
+                </span>
+                <span className="text-amarilloLogo font-bold text-lg">
+                  {pedidoData.horaLlegada 
+                    ? new Date(`2000-01-01T${pedidoData.horaLlegada}`)
+                        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    : <span className="text-gray-400">N/A</span>}
+                </span>
+              </div>
+            </div>
           </div>
         }
       </main>
