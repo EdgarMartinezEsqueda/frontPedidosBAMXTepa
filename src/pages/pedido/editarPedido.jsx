@@ -39,6 +39,7 @@ const EditOrder = ( ) => {
         fechaEntrega: pedido.fechaEntrega || "",
         estado: pedido.estado || "pendiente",
         devoluciones: pedido.devoluciones ?? 0, // Previene null
+        horaLlegada: pedido.horaLlegada ?? "",
         idRuta: pedido.idRuta,
         pedidoComunidad: pedido.pedidoComunidad.map((comunidad) => ({
           ...comunidad,
@@ -56,10 +57,11 @@ const EditOrder = ( ) => {
   const updateMutation = useMutation({
     mutationFn: (data) => {
       return api.patch(`/pedidos/${id}`, {
-      fechaEntrega: data.fechaEntrega,
-      pedidoComunidad: data.pedidoComunidad,
-      devoluciones: data.devoluciones
-    })},
+        fechaEntrega: data.fechaEntrega,
+        pedidoComunidad: data.pedidoComunidad,
+        devoluciones: data.devoluciones
+      })
+    },
     retry:0,
     onSuccess: (res) => {
       toast.success("Cambios guardados");
@@ -69,9 +71,10 @@ const EditOrder = ( ) => {
   });
 
   const finalizeMutation = useMutation({
-    mutationFn: (devoluciones) => api.patch(`/pedidos/${id}`, {
+    mutationFn: ({ devoluciones, horaLlegada }) => api.patch(`/pedidos/${id}`, {
       estado: "finalizado",
       devoluciones: devoluciones,
+      horaLlegada: horaLlegada
     }),
     onSuccess: () => {
       toast.success("Pedido finalizado");
@@ -91,15 +94,12 @@ const EditOrder = ( ) => {
   // Verifica permisos del usuario
   useEffect(() => {
     if (pedido && user.data) {
-
       if(pedido.estado === "finalizado") navigate(`/pedido/${id}`); // Evita editar pedidos finalizados
 
-      const isAdmin = user.data.rol === 'Direccion';
+      const isAdmin = user.data.rol === "Direccion";
       const isOwner = pedido.idTs === user.data.id;
       
-      if (!isAdmin && !isOwner) {
-        navigate('/404', { replace: true });
-      }
+      if (!isAdmin && !isOwner) navigate("/404", { replace: true });
     }
   }, [pedido, user.data, navigate]);
 
@@ -110,8 +110,14 @@ const EditOrder = ( ) => {
       toast.error("Las despensas regresadas no pueden ser negativas");
       return;
     }
-    finalizeMutation.mutate(editableData.devoluciones);
-    navigate(-1);
+    if (!editableData.horaLlegada) {
+      toast.error("Debe ingresar la hora de llegada");
+      return;
+    }
+    finalizeMutation.mutate({
+      devoluciones: editableData.devoluciones,
+      horaLlegada: editableData.horaLlegada
+    });
   };
 
   const handleDelete = () => {
@@ -179,8 +185,21 @@ const EditOrder = ( ) => {
               }, 0)}
             </strong> Arpilladas</h2>
         </div>
-        {/* Despensas regresadas y estado */}
+        {/* Despensas regresadas, hora de llegada y estado */}
         <div className="max-w-md mx-auto my-2 space-y-4 ">
+
+          <div className="flex flex-col gap-2">
+            <label className="text-verdeLogo font-bold">Hora de llegada</label>
+            <input
+              type="time"
+              value={editableData.horaLlegada || ""}
+              onChange={(e) => setEditableData({ ...editableData, horaLlegada: e.target.value })}
+              className="p-2 border rounded"
+              disabled={disabled || editableData.estado === "finalizado"}
+              required
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
             <label className="text-rojoLogo font-bold">Despensas regresadas</label>
             <input
