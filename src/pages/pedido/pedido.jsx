@@ -57,6 +57,30 @@ const OrderPage = () => {
           mode="view"
           data={pedidoData} 
         />
+        <div className="flex justify-center items-center flex-col max-w-md m-auto">
+          <h2 htmlFor="devueltas" className="block font-bold text-2xl text-rojoLogo">Total despensas</h2>
+          <h3 className="relative flex items-center text-amarilloLogo text-xl font-bold">
+            {pedidoData.pedidoComunidad.reduce((total, pedido) => {
+              return total + 
+              (pedido.despensasCosto || 0) + 
+              (pedido.despensasMedioCosto || 0) + 
+              (pedido.despensasSinCosto || 0) + 
+              (pedido.despensasApadrinadas || 0);
+            }, 0)}
+          </h3>
+          <h2 htmlFor="devueltas" className="block text-md text-grisLogo dark:text-white">
+            <strong className="text-amarilloLogo">
+              {pedidoData.pedidoComunidad.reduce((total, pedido) => {
+                return pedido.arpilladas 
+                ? total + 
+                (pedido.despensasCosto || 0) + 
+                (pedido.despensasMedioCosto || 0) + 
+                (pedido.despensasSinCosto || 0) + 
+                (pedido.despensasApadrinadas || 0)
+                : total;
+              }, 0)}
+            </strong> Arpilladas</h2>
+        </div>
         {hasPermission(user.data, RESOURCES.PEDIDOS, "update", pedidoData.idTs) && pedidoData.estado !== "finalizado" && 
           <div className="flex justify-center">
             <GroupButtons disabled={ pedidoData.estado === "finalizado" } id={id}/>
