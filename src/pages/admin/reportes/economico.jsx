@@ -42,18 +42,23 @@ const ReportEconomico = () => {
 
   // Funciones de transformación
   const transformarEvolucionMensual = (data) => {
-    if (!data) return [];
-    return data.map(item => ({
+  if (!data) return [];
+  return data.map(item => {
+    const [year, month] = item.mes.split("-").map(Number);
+    const fecha = new Date(year, month - 1); // Mes base 0
+    return {
       ...item,
-      mes: new Date(item.mes).toLocaleDateString("es-MX", {
+      mes: fecha.toLocaleDateString("es-MX", {
         month: "short",
         year: "2-digit"
       }).replace(/\./g, ""),
       costoTotal: item.costoTotal || 0,
       ingresosRecaudados: item.ingresosRecaudados || 0,
       balance: item.balance || 0
-    }));
-  };
+    };
+  });
+};
+
 
   // Funciones de filtrado y paginación
   const filterData = (data, searchTerm) => 
