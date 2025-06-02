@@ -46,6 +46,7 @@ const VerTicket = () => {
           <InfoRow label="Usuario que levantó el ticket" value={ticket.usuario.username} />
           <InfoRow label="Prioridad" value={ticket.prioridad} />
           <InfoRow label="Descripción del problema" value={ticket.descripcion} />
+          <InfoRow label="Comentarios del encargado de soporte" value={ticket.comentarios ?? "No se han escrito comentarios"} />
           <InfoRow label="Fecha de creación" value={new Date(ticket.createdAt).toLocaleDateString()} />
         </div>
       </main>

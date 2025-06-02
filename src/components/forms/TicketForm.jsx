@@ -8,6 +8,7 @@ const TicketForm = ({ onSubmit, isSubmitting, existingTicket }) => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     descripcion: "",
+    comentarios: "",
     prioridad: "baja",
     estatus: "abierto" // Nuevo campo para el estatus
   });
@@ -17,6 +18,7 @@ const TicketForm = ({ onSubmit, isSubmitting, existingTicket }) => {
     if (existingTicket) {
       setFormData({
         descripcion: existingTicket.descripcion || "",
+        comentarios: existingTicket.comentarios || "",
         prioridad: existingTicket.prioridad || "baja",
         estatus: existingTicket.estatus || "abierto"
       });
@@ -102,6 +104,16 @@ const TicketForm = ({ onSubmit, isSubmitting, existingTicket }) => {
               value={formData.estatus}
               onChange={handleChange}
               placeholder="Seleccione el estatus"
+            />
+            <label className="block text-sm font-medium text-gray-700">
+              Comentarios finales
+            </label>
+            <textarea
+              name="comentarios"
+              value={formData.comentarios ?? ""}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 h-32 focus:border-verdeLogo focus:ring-verdeLogo"
+              disabled={!canEditStatus && !!existingTicket}
             />
           </div>
         )}
