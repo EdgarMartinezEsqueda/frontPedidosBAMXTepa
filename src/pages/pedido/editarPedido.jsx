@@ -67,20 +67,23 @@ const EditOrder = ( ) => {
       toast.success("Cambios guardados");
       navigate(`/pedido/${id}`);
     },
-    onError: (error) => toast.error(error.response?.data?.error.message || "Error guardando") ,
+    onError: (error) => toast.error(error.response?.data?.error.message || "Error guardando el pedido") ,
   });
 
   const finalizeMutation = useMutation({
     mutationFn: ({ devoluciones, horaLlegada }) => api.patch(`/pedidos/${id}`, {
-      estado: "finalizado",
+      fechaEntrega: data.fechaEntrega,
+      pedidoComunidad: data.pedidoComunidad,
       devoluciones: devoluciones,
-      horaLlegada: horaLlegada
+      horaLlegada: horaLlegada,
+      estado: "finalizado"
     }),
     onSuccess: () => {
       toast.success("Pedido finalizado");
       setEditableData(prev => ({ ...prev, estado: "finalizado" }));
       navigate(`/pedido/${id}`);
     },
+    onError: (error) => toast.error(error.response?.data?.error.message || "Error finalizando pedido")
   });
 
   const deleteMutation = useMutation({
@@ -114,10 +117,7 @@ const EditOrder = ( ) => {
       toast.error("Debe ingresar la hora de llegada");
       return;
     }
-    finalizeMutation.mutate({
-      devoluciones: editableData.devoluciones,
-      horaLlegada: editableData.horaLlegada
-    });
+    finalizeMutation.mutate( editableData );
   };
 
   const handleDelete = () => {
