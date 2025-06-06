@@ -71,11 +71,11 @@ const EditOrder = ( ) => {
   });
 
   const finalizeMutation = useMutation({
-    mutationFn: ({ devoluciones, horaLlegada }) => api.patch(`/pedidos/${id}`, {
+    mutationFn: ( data ) => api.patch(`/pedidos/${id}`, {
       fechaEntrega: data.fechaEntrega,
       pedidoComunidad: data.pedidoComunidad,
-      devoluciones: devoluciones,
-      horaLlegada: horaLlegada,
+      devoluciones: data.devoluciones,
+      horaLlegada: data.horaLlegada,
       estado: "finalizado"
     }),
     onSuccess: () => {
@@ -83,7 +83,7 @@ const EditOrder = ( ) => {
       setEditableData(prev => ({ ...prev, estado: "finalizado" }));
       navigate(`/pedido/${id}`);
     },
-    onError: (error) => toast.error(error.response?.data?.error.message || "Error finalizando pedido")
+    onError: (error) => {toast.error(error.response?.data?.error.message || "Error finalizando pedido"); console.error(error);},
   });
 
   const deleteMutation = useMutation({
