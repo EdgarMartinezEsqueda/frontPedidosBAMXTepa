@@ -23,6 +23,7 @@ const EditOrder = ( ) => {
       const response = await api.get(`/pedidos/${id}`);
       return response.data;
     },
+    retry: false, // Evitar reintentos automáticos
   });
 
   // Estado editable
@@ -108,6 +109,7 @@ const EditOrder = ( ) => {
 
   // Handlers
   const handleSave = () => updateMutation.mutate(editableData);
+
   const handleFinalize = () => {
     if (editableData.devoluciones < 0) {
       toast.error("Las despensas regresadas no pueden ser negativas");
@@ -117,7 +119,31 @@ const EditOrder = ( ) => {
       toast.error("Debe ingresar la hora de llegada");
       return;
     }
-    finalizeMutation.mutate( editableData );
+
+    const totalOriginal = pedido.pedidoComunidad.reduce((total, com) => (
+      total + 
+      (com.despensasCosto || 0) + 
+      (com.despensasMedioCosto || 0) + 
+      (com.despensasSinCosto || 0) + 
+      (com.despensasApadrinadas || 0)
+    ), 0);
+
+    const totalActual = editableData.pedidoComunidad.reduce((total, com) => (
+      total + 
+      (com.despensasCosto || 0) + 
+      (com.despensasMedioCosto || 0) + 
+      (com.despensasSinCosto || 0) + 
+      (com.despensasApadrinadas || 0)
+    ), 0);
+
+    const totalEntregado = totalActual + editableData.devoluciones;
+
+    if (totalEntregado !== totalOriginal) {
+      toast.error(`Las despensas no coinciden. Original: ${totalOriginal}, Entregadas: ${totalActual}, Devueltas: ${editableData.devoluciones}`);
+      return;
+    }
+
+    finalizeMutation.mutate(editableData);
   };
 
   const handleDelete = () => {
