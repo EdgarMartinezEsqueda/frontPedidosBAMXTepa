@@ -12,13 +12,24 @@ import TableOrder from "components/tables/orders/TableOrder";
 import AcceptButton from "components/buttons/Accept";
 import Select from "components/selects/Select";
 
+const getTomorrowDate = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);  // Suma 1 día
+  
+  const year = tomorrow.getFullYear();
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+};
+
 const NewOrder = () => {
   const { user } = useAuth();
   const idTs = user.data?.id;
   const navigate = useNavigate();
 
-  const [selectedRutaId, setSelectedRutaId] = useState("");
-  const [fechaEntrega, setFechaEntrega] = useState("");
+  const [selectedRutaId, setSelectedRutaId] = useState(null);
+  const [fechaEntrega, setFechaEntrega] = useState(getTomorrowDate());
   const [newPedido, setNewPedido] = useState({ pedidoComunidad: [] });
 
   // Obtener comunidades desde la API
@@ -119,7 +130,7 @@ const NewOrder = () => {
               selectedRutaId={selectedRutaId}
               />
             <div className="flex justify-center items-center flex-col max-w-md m-auto">
-              <h2 htmlFor="devueltas" className="block font-bold text-2xl text-rojoLogo">Total despensas</h2>
+              <h2 className="block font-bold text-2xl text-rojoLogo">Total despensas</h2>
               <h3 className="relative flex items-center text-amarilloLogo text-xl font-bold">
                 {newPedido.pedidoComunidad.reduce((total, pedido) => {
                   return total + 
@@ -129,7 +140,7 @@ const NewOrder = () => {
                   (pedido.despensasApadrinadas || 0);
                 }, 0)}
               </h3>
-              <h2 htmlFor="devueltas" className="block text-md text-grisLogo dark:text-white">
+              <h2 className="block text-md text-grisLogo dark:text-white">
                 <strong className="text-amarilloLogo">
                   {newPedido.pedidoComunidad.reduce((total, pedido) => {
                     return pedido.arpilladas 
