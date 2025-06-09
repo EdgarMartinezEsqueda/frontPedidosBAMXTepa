@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import api from "lib/axios";
@@ -15,28 +15,18 @@ const OrderPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
 
-  const { data: pedidoData, isLoading, isError } = useQuery({
-    queryKey: ["pedido"],
+  const { data: pedidoData, isLoading, isError, error: errorPedido } = useQuery({
+    queryKey: ["pedido", id],
     queryFn: async () => {
       const { data } = await api.get(`/pedidos/${id}`);
       return data;
     },
-    onError: () => toast.error("Error cargando el pedido")
+    retry: false, // Evitar reintentos automáticos
   });
   
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError) return <div>Error: {errorPedido.message}</div>;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 container mx-auto px-4 py-8 max-w-md text-center">
-          Cargando datos del pedido...
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-  
   return (
       <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -109,7 +99,7 @@ const OrderPage = () => {
                 <span className="text-amarilloLogo font-bold text-lg">
                   {pedidoData.horaLlegada 
                     ? new Date(`2000-01-01T${pedidoData.horaLlegada}`)
-                        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
                     : <span className="text-gray-400">N/A</span>}
                 </span>
               </div>
