@@ -8,20 +8,20 @@ const ButtonGroup = ({ disabled, onSave, onFinalize, onDelete }) => {
     {
       label: "Guardar",
       icon: <FaRegSave className="text-2xl" />,
-      bg: "hover:bg-verdeLogo",
+      bg: "hover:bg-verdeLogo hover:text-white",
       action: onSave,
     },
     {
       label: "Finalizar",
       icon: <IoIosDoneAll className="text-2xl" />,
-      bg: "hover:bg-amarilloLogo",
+      bg: "hover:bg-amarilloLogo hover:text-white",
       action: onFinalize,
       hide: !onFinalize,
     },
     {
       label: "Borrar",
       icon: <MdDeleteOutline className="text-2xl" />,
-      bg: "hover:bg-rojoLogo",
+      bg: "hover:bg-rojoLogo hover:text-white",
       action: onDelete,
     },
   ];
