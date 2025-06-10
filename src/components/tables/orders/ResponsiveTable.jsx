@@ -11,7 +11,23 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
     "Arpilladas",
     "Observaciones"
   ];
-  
+
+  const totales = {
+    despensasCosto: 0,
+    despensasMedioCosto: 0,
+    despensasSinCosto: 0,
+    despensasApadrinadas: 0,
+    comite: 0,
+  };
+
+  data.pedidoComunidad.forEach(item => {
+    totales.despensasCosto += item.despensasCosto || 0;
+    totales.despensasMedioCosto += item.despensasMedioCosto || 0;
+    totales.despensasSinCosto += item.despensasSinCosto || 0;
+    totales.despensasApadrinadas += item.despensasApadrinadas || 0;
+    totales.comite += item.comite || 0;
+  });
+
   return (
     <div className="w-full overflow-hidden rounded-lg ">
       <table className="w-full divide-y divide-gray-200 dark:divide-gray-700 text-black dark:text-white">
@@ -63,12 +79,12 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
               {/* Campos numéricos */}
               {["despensasCosto", "despensasMedioCosto", "despensasSinCosto", "despensasApadrinadas", "comite"].map((field, index) => (
                 <td
-                  data-th={headers[index + 2]}
+                  data-th={headers[index + 3]}
                   className="block md:table-cell px-4 py-2 text-sm relative md:text-center"
                   key={index}
                 >
                  <div className="flex justify-between items-center md:block gap-2">
-                  <span className="text-gray-400 md:hidden">{headers[index + 2]}</span>
+                  <span className="text-gray-400 md:hidden">{headers[index + 3]}</span>
                   
                   {mode !== "view" ? (
                     <input
@@ -137,6 +153,24 @@ const ResponsiveOrderTable = ({ mode, data, handleChange }) => {
             </tr>
           ))}
         </tbody>
+        {/* Totales solo para desktop */}
+        <tfoot className="hidden md:table-footer-group bg-gray-100 dark:bg-gray-900 font-semibold text-sm text-gray-800 dark:text-gray-200">
+          <tr>
+            {/* Comunidad, Encargada, Contacto */}
+            <td className="px-4 py-2 text-left" colSpan={3}>Totales</td>
+
+            {/* Valores numéricos */}
+            {[ "despensasCosto", "despensasMedioCosto", "despensasSinCosto", "despensasApadrinadas", "comite"].map((field, index) => (
+              <td key={index} className="px-4 py-2 text-center">
+                {totales[field]}
+              </td>
+            ))}
+
+            {/* Arpilladas y Observaciones (vacíos o con guiones) */}
+            <td className="px-4 py-2 text-center">-</td>
+            <td className="px-4 py-2 text-center">-</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
