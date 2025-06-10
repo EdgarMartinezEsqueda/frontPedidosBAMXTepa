@@ -22,13 +22,18 @@ const CalendarComponent = ({ eventos }) => {
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState("month");
   
-  const formattedEvents = eventos.map(evento => ({
-    title: `${evento.ruta} - ${evento.totalDespensas} despensas`,
-    start: new Date(evento.fecha),
-    end: new Date(evento.fecha),
-    allDay: true,
-    estado: evento.estado
-  }));
+  const formattedEvents = eventos.map(evento => {
+    const [year, month, day] = evento.fecha.split('-').map(Number);
+    const startDate = new Date(year, month - 1, day);
+    
+    return {
+      title: `${evento.ruta} - ${evento.totalDespensas} despensas`,
+      start: startDate,
+      end: startDate,
+      allDay: true,
+      estado: evento.estado
+    };
+  });
   
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mt-4">
