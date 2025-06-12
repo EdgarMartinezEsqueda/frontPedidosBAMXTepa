@@ -42,23 +42,34 @@ const ReportEconomico = () => {
 
   // Funciones de transformación
   const transformarEvolucionMensual = (data) => {
-  if (!data) return [];
-  return data.map(item => {
-    const [year, month] = item.mes.split("-").map(Number);
-    const fecha = new Date(year, month - 1); // Mes base 0
-    return {
-      ...item,
-      mes: fecha.toLocaleDateString("es-MX", {
-        month: "short",
-        year: "2-digit"
-      }).replace(/\./g, ""),
-      costoTotal: item.costoTotal || 0,
-      ingresosRecaudados: item.ingresosRecaudados || 0,
-      balance: item.balance || 0
-    };
-  });
-};
+    if (!data) return [];
+    return data.map(item => {
+      const [year, month] = item.mes.split("-").map(Number);
+      const fecha = new Date(year, month - 1);
+      return {
+        ...item,
+        mes: fecha.toLocaleDateString("es-MX", {
+          month: "short",
+          year: "2-digit"
+        }).replace(/\./g, ""),
+        costoTotal: item.costoTotal || 0,
+        ingresosRecaudados: item.ingresosRecaudados || 0,
+        despensasSubsidiadas: item.despensasSubsidiadas || 0,
+        balance: item.balance || 0
+      };
+    });
+  };
 
+  // Transformar datos para gráficos comparativos
+  const transformarDatosComparativos = (data) => {
+    if (!data) return [];
+    return data.map(item => ({
+      nombre: item.nombre,
+      "Costo Total": item.costoTotal,
+      "Ingresos": item.ingresosRecaudados,
+      "Subsidiado": item.despensasSubsidiadas
+    }));
+  };
 
   // Funciones de filtrado y paginación
   const filterData = (data, searchTerm) => 
@@ -82,20 +93,19 @@ const ReportEconomico = () => {
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-6 bg-gray-50 space-y-6">
-          {/* Sección de KPIs */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <main className="flex-1 p-4 sm:p-6 bg-gray-50 space-y-6 overflow-x-hidden">
+          {/* Sección de KPIs - 6 tarjetas */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             <KPICard
               title="Costo Total"
               value={`$${resumenGlobal.costoTotal.toLocaleString()}`}
-              trend={resumenGlobal.costoTotal > resumenGlobal.ingresosRecaudados ? "negative" : "positive"}
             />
             <KPICard
-              title="Ingresos Recaudados"
+              title="Ingresos"
               value={`$${resumenGlobal.ingresosRecaudados.toLocaleString()}`}
             />
             <KPICard
-              title="Despensas Subsidiadas"
+              title="Subsidiado"
               value={`$${resumenGlobal.despensasSubsidiadas.toLocaleString()}`}
             />
             <KPICard
@@ -103,34 +113,43 @@ const ReportEconomico = () => {
               value={`$${resumenGlobal.balanceNeto.toLocaleString()}`}
               trend={resumenGlobal.balanceNeto >= 0 ? "positive" : "negative"}
             />
+            <KPICard
+              title="Total Despensas"
+              value={resumenGlobal.totalDespensasEntregadas.toLocaleString()}
+            />
+            <KPICard
+              title="Promedio x Despensa"
+              value={`$${resumenGlobal.promedioIngresoPorDespensa.toFixed(2)}`}
+            />
           </div>
 
-          {/* Gráficos principales */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChartComponent
-              type="line"
-              title="Evolución Mensual ($)"
-              data={transformarEvolucionMensual(evolucionMensual)}
-              bars={[
-                { dataKey: "costoTotal", name: "Costo Total", color: "#E09E00" },
-                { dataKey: "ingresosRecaudados", name: "Ingresos", color: "#00E10C" },
-                { dataKey: "despensasSubsidiadas", name: "Subsidiadas", color: "#E0005C" },
-                { dataKey: "balance", name: "Balance", color: "#0044E0" }
-              ]}
-            />
-            <ChartComponent
-              type="comparative"
-              title="Distribución de Tipos de Despensas ($)"
-              data={transformarTiposDespensasBar(resumenGlobal?.detalle)}
-              bars={[
-                { 
-                  dataKey: "valor",
-                  name: "Cantidad",
-                  color: "#F59E0B" // Color base, se sobreescribe con el color de cada barra
-                }
-              ]}
-              
-            />
+          {/* Gráficos principales - Layout optimizado */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <ChartComponent
+                type="line"
+                title="Evolución Mensual ($)"
+                data={transformarEvolucionMensual(evolucionMensual)}
+                bars={[
+                  { dataKey: "costoTotal", name: "Costo Total", color: "#E09E00" },
+                  { dataKey: "ingresosRecaudados", name: "Ingresos", color: "#00E10C" },
+                  { dataKey: "despensasSubsidiadas", name: "Subsidiadas", color: "#E0005C" },
+                  { dataKey: "balance", name: "Balance", color: "#0044E0" }
+                ]}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <ChartComponent
+                type="tipos-despensas"
+                title="Tipos de Despensas ($)"
+                data={transformarTiposDespensasBar(resumenGlobal?.detalle)}
+              />
+              <ChartComponent
+                type="tipos-despensas"
+                title="Tipos de Despensas (Cantidad)"
+                data={transformarTiposDespensasConteoBar(resumenGlobal?.detalleConteo)}
+              />
+            </div>
           </div>
 
           {/* Distribución por Comunidades */}
@@ -148,14 +167,23 @@ const ReportEconomico = () => {
               columns={[
                 { key: "nombre", title: "Comunidad" },
                 { key: "municipio", title: "Municipio" },
-                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v}` },
-                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v}` },
-                { key: "balance", title: "Balance", 
+                { key: "totalDespensasEntregadas", title: "Despensas", render: (v) => v },
+                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v.toLocaleString()}` },
+                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v.toLocaleString()}` },
+                { key: "despensasSubsidiadas", title: "Subsidiado", render: (v) => `$${v.toLocaleString()}` },
+                { 
+                  key: "balance", 
+                  title: "Balance", 
                   render: (v) => (
                     <span className={`${v >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      ${v}
+                      ${v.toLocaleString()}
                     </span>
                   ) 
+                },
+                { 
+                  key: "porcentajeParticipacion", 
+                  title: "Participación", 
+                  render: (v) => `${v.toFixed(2)}%` 
                 }
               ]}
               data={paginate(comunidadesFiltradas, currentComPage).data}
@@ -179,38 +207,35 @@ const ReportEconomico = () => {
               />
             </div>
             <ChartComponent
-              type="line"
-              title="Tendencias Financieras por Municipio"
-              data={transformarComparativaMunicipiosLine(distribucionMunicipios)}
+              type="comparative"
+              title="Comparativa por Municipio ($)"
+              data={transformarDatosComparativos(distribucionMunicipios)}
               bars={[
-                { 
-                  dataKey: "CostoTotal", 
-                  name: "Costo Total", 
-                  color: "#F59E0B" // Naranja
-                },
-                { 
-                  dataKey: "Ingresos", 
-                  name: "Ingresos Recaudados", 
-                  color: "#10B981" // Verde
-                },
-                { 
-                  dataKey: "Subsidiado", 
-                  name: "Subsidiado", 
-                  color: "#3B82F6" // Azul
-                }
+                { dataKey: "Costo Total", name: "Costo Total", color: "#F59E0B" },
+                { dataKey: "Ingresos", name: "Ingresos", color: "#10B981" },
+                { dataKey: "Subsidiado", name: "Subsidiado", color: "#3B82F6" }
               ]}
             />
             <TableComponent
               columns={[
                 { key: "nombre", title: "Municipio" },
-                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v}` },
-                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v}` },
-                { key: "balance", title: "Balance", 
+                { key: "totalDespensasEntregadas", title: "Despensas", render: (v) => v },
+                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v.toLocaleString()}` },
+                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v.toLocaleString()}` },
+                { key: "despensasSubsidiadas", title: "Subsidiado", render: (v) => `$${v.toLocaleString()}` },
+                { 
+                  key: "balance", 
+                  title: "Balance", 
                   render: (v) => (
                     <span className={`${v >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      ${v}
+                      ${v.toLocaleString()}
                     </span>
                   ) 
+                },
+                { 
+                  key: "porcentajeParticipacion", 
+                  title: "Participación", 
+                  render: (v) => `${v.toFixed(2)}%` 
                 }
               ]}
               data={paginate(municipiosFiltrados, currentMunPage).data}
@@ -234,38 +259,35 @@ const ReportEconomico = () => {
               />
             </div>
             <ChartComponent
-              type="line"
-              title="Comparativa Financiera por Ruta"
-              data={transformarDatosRutasLine(distribucionRutas)}
+              type="comparative"
+              title="Comparativa por Ruta ($)"
+              data={transformarDatosComparativos(distribucionRutas)}
               bars={[
-                { 
-                  dataKey: "CostoTotal", 
-                  name: "Costo Total", 
-                  color: "#F59E0B" // Naranja
-                },
-                { 
-                  dataKey: "Ingresos", 
-                  name: "Ingresos Recaudados", 
-                  color: "#10B981" // Verde
-                },
-                { 
-                  dataKey: "Subsidiado", 
-                  name: "Subsidiado", 
-                  color: "#3B82F6" // Azul
-                }
+                { dataKey: "Costo Total", name: "Costo Total", color: "#F59E0B" },
+                { dataKey: "Ingresos", name: "Ingresos", color: "#10B981" },
+                { dataKey: "Subsidiado", name: "Subsidiado", color: "#3B82F6" }
               ]}
             />
             <TableComponent
               columns={[
                 { key: "nombre", title: "Ruta" },
-                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v}` },
-                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v}` },
-                { key: "balance", title: "Balance",
+                { key: "totalDespensasEntregadas", title: "Despensas", render: (v) => v },
+                { key: "costoTotal", title: "Costo Total", render: (v) => `$${v.toLocaleString()}` },
+                { key: "ingresosRecaudados", title: "Ingresos", render: (v) => `$${v.toLocaleString()}` },
+                { key: "despensasSubsidiadas", title: "Subsidiado", render: (v) => `$${v.toLocaleString()}` },
+                { 
+                  key: "balance", 
+                  title: "Balance",
                   render: (v) => (
                     <span className={`${v >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      ${v}
+                      ${v.toLocaleString()}
                     </span>
                   )
+                },
+                { 
+                  key: "porcentajeParticipacion", 
+                  title: "Participación", 
+                  render: (v) => `${v.toFixed(2)}%` 
                 }
               ]}
               data={paginate(rutasFiltradas, currentRutaPage).data}
@@ -283,63 +305,25 @@ const ReportEconomico = () => {
   );
 };
 
+// Funciones de transformación para gráficos
 const transformarTiposDespensasBar = (detalle) => {
   if (!detalle) return [];
-  
   return [
-    {
-      ruta: "Costo Completo",
-      valor: detalle.costoCompleto || 0,
-      color: "#F59E0B"
-    },
-    {
-      ruta: "Medio Costo",
-      valor: detalle.medioCosto || 0,
-      color: "#10B981"
-    },
-    {
-      ruta: "Sin Costo",
-      valor: detalle.sinCosto || 0,
-      color: "#FB7185"
-    },
-    {
-      ruta: "Apadrinadas", 
-      valor: detalle.apadrinadas || 0,
-      color: "#0F766E"
-    }
+    { ruta: "Costo Completo", valor: detalle.costoCompleto || 0, color: "#F59E0B" },
+    { ruta: "Medio Costo", valor: detalle.medioCosto || 0, color: "#10B981" },
+    { ruta: "Sin Costo", valor: detalle.sinCosto || 0, color: "#FB7185" },
+    { ruta: "Apadrinadas", valor: detalle.apadrinadas || 0, color: "#0F766E" }
   ];
 };
 
-const transformarTiposDespensas = (detalle) => {
-  if (!detalle) return [];
+const transformarTiposDespensasConteoBar = (detalleConteo) => {
+  if (!detalleConteo) return [];
   return [
-    { name: "Costo Completo", value: detalle.costoCompleto || 0 },
-    { name: "Medio Costo", value: detalle.medioCosto || 0 },
-    { name: "Sin Costo", value: detalle.sinCosto || 0 },
-    { name: "Apadrinadas", value: detalle.apadrinadas || 0 }
+    { ruta: "Costo Completo", valor: detalleConteo.costoCompleto, color: "#F59E0B" },
+    { ruta: "Medio Costo", valor: detalleConteo.medioCosto, color: "#10B981" },
+    { ruta: "Sin Costo", valor: detalleConteo.sinCosto, color: "#FB7185" },
+    { ruta: "Apadrinadas", valor: detalleConteo.apadrinadas, color: "#0F766E" }
   ];
-};
-
-const transformarComparativaMunicipiosLine = (data) => {
-  if (!data) return [];
-  
-  return data.map(municipio => ({
-    mes: municipio.nombre, // Usaremos 'mes' como key para el eje X
-    CostoTotal: municipio.costoTotal || 0,
-    Ingresos: municipio.ingresosRecaudados || 0,
-    Subsidiado: municipio.despensasSubsidiadas || 0
-  }));
-};
-
-const transformarDatosRutasLine = (data) => {
-  if (!data) return [];
-  
-  return data.map(ruta => ({
-    mes: ruta.nombre, // El nombre de la ruta irá en el eje X
-    CostoTotal: ruta.costoTotal,
-    Ingresos: ruta.ingresosRecaudados,
-    Subsidiado: ruta.despensasSubsidiadas
-  }));
 };
 
 export default ReportEconomico;
