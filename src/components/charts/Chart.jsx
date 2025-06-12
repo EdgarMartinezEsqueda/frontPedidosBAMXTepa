@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart, PieChart, Bar, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Sector, LineChart, Line } from "recharts";
+import { BarChart, PieChart, Bar, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Sector, LineChart, Line, Cell } from "recharts";
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -49,7 +49,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-const ChartComponent = ({ type, title, data, bars }) => {
+const ChartComponent = ({ type, title, data, bars, name }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_, index) => {
@@ -111,13 +111,15 @@ const ChartComponent = ({ type, title, data, bars }) => {
             />
             <YAxis />
             <Tooltip />
-            <Legend />
             <Bar 
               dataKey="valor" 
-              name="Valor" 
-              fill={(entry) => entry.color} 
+              name={name} 
               radius={[4, 4, 0, 0]}
-            />
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
           </BarChart>
         ) : type === "bar" ? (
           <BarChart data={data}>

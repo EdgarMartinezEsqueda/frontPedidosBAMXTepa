@@ -124,8 +124,8 @@ const ReportEconomico = () => {
           </div>
 
           {/* Gráficos principales - Layout optimizado */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-6 gap-6">
+            <div className="col-span-6 lg:col-span-3">
               <ChartComponent
                 type="line"
                 title="Evolución Mensual ($)"
@@ -138,17 +138,23 @@ const ReportEconomico = () => {
                 ]}
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ChartComponent
-                type="tipos-despensas"
-                title="Tipos de Despensas ($)"
-                data={transformarTiposDespensasBar(resumenGlobal?.detalle)}
-              />
-              <ChartComponent
-                type="tipos-despensas"
-                title="Tipos de Despensas (Cantidad)"
-                data={transformarTiposDespensasConteoBar(resumenGlobal?.detalleConteo)}
-              />
+            <div className="col-span-6 lg:col-span-3 grid grid-cols-6 gap-6">
+              <div className="col-span-6 lg:col-span-3">
+                <ChartComponent
+                  type="tipos-despensas"
+                  title="Valor de Despensas"
+                  data={transformarTiposDespensasBar(resumenGlobal?.detalle)}
+                  name="$"
+                />
+              </div>
+              <div className="col-span-6 lg:col-span-3">
+                <ChartComponent
+                  type="tipos-despensas"
+                  title="Cantidad de Despensas"
+                  data={transformarTiposDespensasConteoBar(resumenGlobal?.detalleConteo)}
+                  name="Despensas"
+                />
+              </div>
             </div>
           </div>
 
