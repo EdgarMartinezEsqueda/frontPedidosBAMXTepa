@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Calendar } from "react-big-calendar";
 import { dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -21,19 +22,24 @@ const localizer = dateFnsLocalizer({
 const CalendarComponent = ({ eventos }) => {
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState("month");
+  const navigate = useNavigate();
   
   const formattedEvents = eventos.map(evento => {
-    const [year, month, day] = evento.fecha.split('-').map(Number);
+    const [year, month, day] = evento.fecha.split("-").map(Number);
     const startDate = new Date(year, month - 1, day);
     
     return {
+      ...evento, // Mantenemos todas las propiedades originales
       title: `${evento.ruta} - ${evento.totalDespensas} despensas`,
       start: startDate,
       end: startDate,
       allDay: true,
-      estado: evento.estado
     };
   });
+
+  const handleEventClick = (event) => {
+    navigate(`/pedido/${event.id}`);
+  };
   
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mt-4">
@@ -49,6 +55,7 @@ const CalendarComponent = ({ eventos }) => {
         onView={setView}
         date={date}
         onNavigate={setDate}
+        onSelectEvent={handleEventClick}
         messages={{
           today: "Hoy",
           previous: "Anterior",
@@ -91,8 +98,9 @@ const CalendarComponent = ({ eventos }) => {
             fontSize: "0.8rem",
             width: "100%",
             margin: "2px 0",
-            left: '0 !important',
-            top: '0 !important'
+            left: "0 !important",
+            top: "0 !important",
+            cursor: "pointer"
           }
         })}
       />
