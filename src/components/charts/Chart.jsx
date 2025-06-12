@@ -56,6 +56,25 @@ const ChartComponent = ({ type, title, data, bars }) => {
     setActiveIndex(index);
   };
 
+  // Determinar si necesitamos rotar las etiquetas del eje X
+  const needsRotation = (data) => {
+    if (!data || data.length === 0) return false;
+    return data.some(item => 
+      (item.ruta && item.ruta.length > 10) || 
+      (item.nombre && item.nombre.length > 10)
+    );
+  };
+
+  // Determinar la clave a usar para el eje X
+  const getXAxisKey = (data) => {
+    if (!data || data.length === 0) return "nombre";
+    if (data[0].ruta !== undefined) return "ruta";
+    if (data[0].nombre !== undefined) return "nombre";
+    if (data[0].mes !== undefined) return "mes";
+    return Object.keys(data[0])[0];
+  };
+
+  // Renderizar el gráfico adecuado
   return (
     <div className="bg-white p-4 rounded-lg shadow-md h-80">
       <h3 className="text-lg font-semibold mb-4">{title}</h3>
@@ -64,14 +83,15 @@ const ChartComponent = ({ type, title, data, bars }) => {
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
-              dataKey="ruta" 
+              dataKey={getXAxisKey(data)} 
               tick={{ fontSize: 12 }}
-              angle={-45}
-              textAnchor="end"
-              interval={0}
+              angle={needsRotation(data) ? -45 : 0}
+              textAnchor={needsRotation(data) ? "end" : "middle"}
+              height={needsRotation(data) ? 60 : 40}
             />
             <YAxis />
             <Tooltip />
+            <Legend />
             {bars.map((bar, index) => (
               <Bar
                 key={index}
@@ -79,9 +99,25 @@ const ChartComponent = ({ type, title, data, bars }) => {
                 name={bar.name}
                 fill={bar.color}
                 radius={[4, 4, 0, 0]}
-                stackId="a"
               />
             ))}
+          </BarChart>
+        ) : type === "tipos-despensas" ? (
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="ruta" 
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar 
+              dataKey="valor" 
+              name="Valor" 
+              fill={(entry) => entry.color} 
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         ) : type === "bar" ? (
           <BarChart data={data}>
@@ -151,5 +187,4 @@ const ChartComponent = ({ type, title, data, bars }) => {
     </div>
   );
 };
-
 export default ChartComponent;
