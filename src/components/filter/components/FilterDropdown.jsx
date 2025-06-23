@@ -14,6 +14,7 @@ const FilterDropdown = ({
   const [filteredItems, setFilteredItems] = useState(allItems);
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
+  allItems = allItems.sort();
 
   // Cerrar al hacer clic fuera
   useClickOutside([dialogRef, triggerRef], () => {
