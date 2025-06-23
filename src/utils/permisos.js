@@ -11,7 +11,9 @@ export const RESOURCES = {
   PEDIDOS: "pedidos",
   RUTAS: "rutas",
   COMUNIDADES: "comunidades",
-  USUARIOS: "usuarios"
+  USUARIOS: "usuarios",
+  TICKETS: "tickets",
+  COBRANZAS: "cobranzas"
 };
 
 const permissions = {
@@ -20,7 +22,8 @@ const permissions = {
     [RESOURCES.RUTAS]: ["create", "read", "update", "delete"],
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
     [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"],
-    [RESOURCES.TICKETS]: ["create", "read", "update", "delete"]
+    [RESOURCES.TICKETS]: ["create", "read", "update", "delete"],
+    [RESOURCES.COBRANZAS]: ["read", "create", "update"]
   },
   [ROLES.CONSEJO]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
     [RESOURCES.PEDIDOS]: ["read"],
@@ -30,7 +33,8 @@ const permissions = {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     },
-    [RESOURCES.TICKETS]: ["create", "read"]
+    [RESOURCES.TICKETS]: ["create", "read"],
+    [RESOURCES.COBRANZAS]: ["read"]
   },
   [ROLES.COORDINADORA]: {
     [RESOURCES.PEDIDOS]: {
@@ -76,7 +80,8 @@ const permissions = {
       actions: ["read", "update" ], // Solo puede modificar su propio usuario
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     },
-    [RESOURCES.TICKETS]: ["read"]
+    [RESOURCES.TICKETS]: ["read"],
+    [RESOURCES.COBRANZAS]: ["read", "create", "update"]
   }
 };
 
