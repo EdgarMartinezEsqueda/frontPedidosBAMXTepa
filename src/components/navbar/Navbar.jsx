@@ -24,7 +24,7 @@ const Navbar = () => {
     { text: "Calendario", roles: ["Direccion", "Consejo",  "Ts", "Almacen", "Coordinadora", "Contabilidad"], link: "/calendario" },
     { text: "Pedidos", roles: ["Direccion", "Consejo",  "Ts", "Almacen", "Coordinadora", "Contabilidad"], link: "/" },
     { text: "Nuevo pedido", roles: ["Direccion", "Ts", "Coordinadora"], link: "/pedido/nuevo" },
-    { text: "Reportes", roles: ["Direccion", "Consejo", "Contabilidad", "Almacen"] , link: "/reportes" },
+    { text: "Reportes", roles: ["Direccion", "Coordinadora", "Consejo", "Contabilidad", "Almacen", "Ts"] , link: "/reportes" },
     { text: "Usuarios", roles: ["Direccion"] , link: "/usuarios" },
     { text: "Rutas", roles: ["Direccion", "Consejo",  "Coordinadora", "Ts", "Contabilidad", "Almacen"], link: "/rutas" },
     { text: "Comunidades", roles: ["Direccion", "Consejo",  "Coordinadora", "Ts", "Contabilidad", "Almacen"], link: "/comunidades" },

@@ -27,14 +27,13 @@ const Sidebar = () => {
         return allNavItems;
       
       case "Coordinadora":
-      case "Ts":
         return allNavItems.filter(item => item.label !== "Económico");
       
       case "Contabilidad":
         return allNavItems.filter(item => item.label !== "Trabajadores Sociales");
 
-      // case "Ts":
-      //   return allNavItems.filter(item => item.label !== "Económico" && item.label !== "Trabajadores Sociales" );
+      case "Ts":
+        return allNavItems.filter(item => item.label !== "Económico" && item.label !== "Trabajadores Sociales" );
       
       case "Almacen":
         return allNavItems.filter(item => 

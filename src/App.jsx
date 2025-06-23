@@ -59,7 +59,7 @@ function App() {
     { path: "/reportes/rutas", element: <ReportesRutas />, requiresAuth: true, title: "Reportes rutas", allowedRoles: ["Direccion", "Contabilidad", "Consejo", "Ts", "Coordinadora", "Almacen"] },
     { path: "/reportes/ts", element: <ReportesTS />, requiresAuth: true, title: "Reportes Trabajadores Sociales", allowedRoles: ["Direccion", "Consejo", "Coordinadora", "Almacen"] },
     { path: "/reportes/despensas", element: <ReportesDespensas />, requiresAuth: true, title: "Reportes despensas", allowedRoles: ["Direccion", "Contabilidad", "Consejo", "Ts", "Coordinadora", "Almacen"] },
-    { path: "/reportes/comunidades", element: <ReportesComunidades />, requiresAuth: true, title: "Reportes comunidades", allowedRoles: ["Direccion", "Contabilidad", "Consejo", "Ts", "Coordinadora"] },
+    { path: "/reportes/comunidades", element: <ReportesComunidades />, requiresAuth: true, title: "Reportes comunidades", allowedRoles: ["Direccion", "Contabilidad", "Consejo", "Ts", "Coordinadora", "Almacen"	] },
     { path: "/reportes/apadrinadas", element: <ReportesApadrinadas />, requiresAuth: true, title: "Reportes apadrinadas", allowedRoles: ["Direccion", "Contabilidad", "Consejo", "Ts", "Coordinadora"] },
     { path: "/reportes/economico", element: <ReportesEconomicos />, requiresAuth: true, title: "Reportes económicos", allowedRoles: ["Direccion", "Contabilidad", "Consejo"] },
 
