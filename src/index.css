@@ -91,4 +91,8 @@ h1 {
       min-height: 370px;
       height: 37opx;
     }
-  }
+}
+
+button {
+    cursor: pointer;
+}
