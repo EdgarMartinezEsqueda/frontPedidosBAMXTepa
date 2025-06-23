@@ -1,5 +1,6 @@
-import { useParams, useNavigate } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useParams } from "react-router";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import api from "lib/axios";
 import { hasPermission, RESOURCES } from "utils/permisos";
@@ -10,10 +11,21 @@ import Footer from "components/footer/Footer";
 import TableOrder from "components/tables/orders/TableOrder";
 import GroupButtons from "components/buttons/ButtonsForOrderPage";
 import ExportSingleOrderButton from "components/buttons/ExportSingleOrderButton";
+import BotonCobranza from "components/buttons/ButtonsCobranza";
+import FormularioCobranza from "components/forms/CobranzaForm";
 
 const OrderPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const [mostrarFormularioCobranza, setMostrarFormularioCobranza] = useState(false);
+  const [datosCobranza, setDatosCobranza] = useState({
+      arpillasCantidad: 0,
+      arpillasImporte: 0,
+      excedentesCantidad: 0,
+      excedentesImporte: 0
+  });
 
   const { data: pedidoData, isLoading, isError, error: errorPedido } = useQuery({
     queryKey: ["pedido", id],
@@ -23,6 +35,48 @@ const OrderPage = () => {
     },
     retry: false, // Evitar reintentos automáticos
   });
+
+  const generarCobranzaMutation = useMutation({
+    mutationFn: async (datosAdicionales) => {
+        return api.post(`/cobranzas/generar/${id}`, {
+            usuarioId: user.data.id,
+            ...datosAdicionales
+        });
+    },
+    onSuccess: (response) => {
+        // Respuesta exitosa del backend
+        toast.success("Cobranza generada correctamente");
+        
+        // Invalidar query y resetear estado
+        queryClient.invalidateQueries(['pedido', id]);
+        setMostrarFormularioCobranza(false);
+        setDatosCobranza({
+            arpillasCantidad: 0,
+            arpillasImporte: 0,
+            excedentesCantidad: 0,
+            excedentesImporte: 0
+        });
+    },
+    onError: (error) => {
+        toast.error(error.response?.data?.message || "Error al generar cobranza");
+    }
+  });
+  
+  const handleCambioDatos = (campo, valor) => {
+    // Convertir a número y manejar vacíos
+    const numValue = valor === "" ? 0 : Number(valor);
+    setDatosCobranza(prev => ({
+      ...prev,
+      [campo]: numValue
+    }));
+  };
+  
+  const handleGenerarCobranza = () => {
+    if (datosCobranza.arpillasCantidad < 0 || datosCobranza.arpillasImporte < 0 || datosCobranza.excedentesCantidad < 0 || datosCobranza.excedentesImporte < 0) 
+      return toast.error("Los valores no pueden ser negativos");
+    
+    generarCobranzaMutation.mutate(datosCobranza);
+  };
   
   if (isLoading) return <div>Cargando...</div>;
   if (isError) return <div>Error: {errorPedido.message}</div>;
@@ -105,6 +159,27 @@ const OrderPage = () => {
               </div>
             </div>
           </div>
+        }
+        {/* Mostrar botón/formulario de cobranza */}
+        {hasPermission(user.data, RESOURCES.COBRANZAS, "update", pedidoData.idTs) && 
+          pedidoData.estado === "finalizado" && (
+            <>
+              <BotonCobranza
+                generada={pedidoData.cobranzaGenerada}
+                url={pedidoData.urlCobranza}
+                onGenerar={() => setMostrarFormularioCobranza(true)}
+              />
+              
+              {mostrarFormularioCobranza && (
+                <FormularioCobranza
+                  datos={datosCobranza}
+                  onChange={handleCambioDatos}
+                  onSubmit={handleGenerarCobranza}
+                  onCancel={() => setMostrarFormularioCobranza(false)}
+                />
+              )}
+            </>
+          )
         }
       </main>
       <Footer />
