@@ -23,7 +23,7 @@ const OrderPage = () => {
   const [datosCobranza, setDatosCobranza] = useState({
       arpillasCantidad: 0,
       arpillasImporte: 0,
-      excedentesCantidad: 0,
+      excedentes: "",
       excedentesImporte: 0
   });
 
@@ -53,7 +53,7 @@ const OrderPage = () => {
         setDatosCobranza({
             arpillasCantidad: 0,
             arpillasImporte: 0,
-            excedentesCantidad: 0,
+            excedentes: "",
             excedentesImporte: 0
         });
     },
@@ -64,15 +64,23 @@ const OrderPage = () => {
   
   const handleCambioDatos = (campo, valor) => {
     // Convertir a número y manejar vacíos
-    const numValue = valor === "" ? 0 : Number(valor);
-    setDatosCobranza(prev => ({
-      ...prev,
-      [campo]: numValue
-    }));
+    if(campo === "excedentes") {
+      setDatosCobranza(prev => ({
+        ...prev,
+        [campo]: valor
+      }));
+    }
+    else {
+      const numValue = valor === "" ? 0 : Number(valor);
+      setDatosCobranza(prev => ({
+        ...prev,
+        [campo]: numValue
+      }));
+    }
   };
   
   const handleGenerarCobranza = () => {
-    if (datosCobranza.arpillasCantidad < 0 || datosCobranza.arpillasImporte < 0 || datosCobranza.excedentesCantidad < 0 || datosCobranza.excedentesImporte < 0) 
+    if (datosCobranza.arpillasCantidad < 0 || datosCobranza.arpillasImporte < 0 || datosCobranza.excedentes < 0 || datosCobranza.excedentesImporte < 0) 
       return toast.error("Los valores no pueden ser negativos");
     
     generarCobranzaMutation.mutate(datosCobranza);
