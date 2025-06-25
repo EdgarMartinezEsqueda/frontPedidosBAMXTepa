@@ -13,7 +13,7 @@ const FormularioCobranza = ({ datos, onChange, onSubmit, onCancel }) => (
           </label>
           <input
             type="number"
-            value={datos.arpillasCantidad}
+            placeholder={datos.arpillasCantidad}
             onChange={(e) => onChange("arpillasCantidad", e.target.value)}
             className="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-verdeLogo"
             min="0"
@@ -27,7 +27,7 @@ const FormularioCobranza = ({ datos, onChange, onSubmit, onCancel }) => (
           </label>
           <input
             type="number"
-            value={datos.arpillasImporte}
+            placeholder={datos.arpillasImporte}
             onChange={(e) => onChange("arpillasImporte", e.target.value)}
             className="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-verdeLogo"
             min="0"
@@ -35,15 +35,15 @@ const FormularioCobranza = ({ datos, onChange, onSubmit, onCancel }) => (
           />
         </div>
 
-        {/* Excedentes - Cantidad */}
+        {/* Excedentes - Tipo */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Cantidad de Excedentes
+            Excedentes
           </label>
           <input
-            type="number"
-            value={datos.excedentesCantidad}
-            onChange={(e) => onChange("excedentesCantidad", e.target.value)}
+            type="text"
+            placeholder={datos.excedentes}
+            onChange={(e) => onChange("excedentes", e.target.value)}
             className="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-verdeLogo"
             min="0"
           />
@@ -56,7 +56,7 @@ const FormularioCobranza = ({ datos, onChange, onSubmit, onCancel }) => (
           </label>
           <input
             type="number"
-            value={datos.excedentesImporte}
+            placeholder={datos.excedentesImporte}
             onChange={(e) => onChange("excedentesImporte", e.target.value)}
             className="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-verdeLogo"
             min="0"
