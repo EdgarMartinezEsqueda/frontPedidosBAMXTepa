@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -6,45 +6,43 @@ import api from "lib/axios";
 import ActionButtons from "components/buttons/ActionButtons";
 import { RESOURCES } from "utils/permisos";
 
-const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => {
+const TableComponent = ({ currentPage, pageSize, filters, setTotalOrders }) => {
   const queryClient = useQueryClient();
 
-  // Obtiene TODOS los datos paginados del servidor
-  const { data: allOrders, isLoading } = useQuery({
-    queryKey: ["pedidos", currentPage, pageSize],
+  // Obtiene datos paginados y filtrados del servidor
+  const { data: ordersData, isLoading, isError } = useQuery({
+    queryKey: ["pedidos", currentPage, pageSize, filters],
     queryFn: async () => {
-      const { data } = await api.get("/pedidos", {
-        params: { page: currentPage, pageSize }
-      });
-      setTotalOrders(data.length);
-      return data;
-    }
+      try {
+        const params = { page: currentPage, pageSize };
+      
+        // Agregar filtros
+        if (filters.usuarios && filters.usuarios.length > 0) {
+          params.trabajadores = filters.usuarios.join(',');
+        }
+        if (filters.rutas && filters.rutas.length > 0) {
+          params.rutas = filters.rutas.join(',');
+        }
+        if (filters.estatusPedido && filters.estatusPedido.length > 0) {
+          params.estatus = filters.estatusPedido.join(',');
+        }
+        if (filters.rangoFechas) {
+          params.fechaInicio = filters.rangoFechas.startDate;
+          params.fechaFin = filters.rangoFechas.endDate;
+        }
+
+        const { data } = await api.get("/pedidos", { params });
+        setTotalOrders(data.total);
+        
+        return data.pedidos;
+      } catch (error) {
+        console.error("Error al obtener los pedidos:", error);
+        return [];
+      }
+    },
+    keepPreviousData: true // Para mejor UX al cambiar de página
   });
 
-  // Filtrar datos localmente
-  const filteredData = useMemo(() => {
-    if (!allOrders || !filters) return [];
-    
-    return allOrders.filter(order => {
-      const matchesUser = filters.usuarios.length === 0 ||  filters.usuarios.includes(order.usuario.username);
-      const matchesRoute = filters.rutas.length === 0 ||  filters.rutas.includes(order.ruta.nombre);
-      const matchesStatus = filters.estatusPedido.length === 0 ||  filters.estatusPedido.includes(order.estado);
-      
-      const { startDate, endDate } = filters.rangoFechas || {};
-      const orderDate = order.fechaEntrega;  // formato "YYYY-MM-DD"
-      const matchesDate = (!startDate || orderDate >= startDate) &&  (!endDate || orderDate <= endDate);
-    
-      return matchesUser && matchesRoute && matchesStatus && matchesDate;
-    });
-  }, [allOrders, filters]);
-
-  // Paginación local
-  const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return filteredData.slice(start, start + pageSize);
-  }, [filteredData, currentPage, pageSize]);
-
-  
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/pedidos/${id}`),
     onSuccess: () => {
@@ -63,7 +61,25 @@ const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => 
     };
     return styles[estado] || "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100";
   };
-  
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <p className="text-verdeLogo">Cargando los pedidos</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-rojoLogo">Error cargando los pedidos</p>
+      </div>
+    );
+  }
+
+  const pedidos = ordersData || [];
+
   return (
     <section className="container mx-auto m-6">
       <div className="w-full overflow-hidden rounded-lg lg:border lg:border-gray-200 lg:dark:border-gray-700">
@@ -78,33 +94,51 @@ const TableComponent = ({  currentPage, pageSize, filters, setTotalOrders }) => 
             </tr>
           </thead>
           <tbody className="divide-y lg:divide-gray-200 lg:dark:divide-gray-700 lg:dark:bg-gray-900">
-            {paginatedData.length === 0 ? (
+            {pedidos.length === 0 ? (
               <tr className="block lg:table-row dark:bg-gray-800 rounded-lg shadow p-4 mb-4 lg:p-0 lg:shadow-none lg:bg-transparent">
                 <td colSpan="6" className="px-4 py-4 text-sm text-center text-gray-500 dark:text-gray-400 block lg:table-cell">
-                  No hay datos disponibles.
+                  No se encontraron pedidos con los filtros seleccionados
                 </td>
               </tr>
             ) : (
-              paginatedData.map((item, index) => (
-                <tr key={index} className="block lg:table-row dark:bg-gray-800 rounded-lg shadow p-4 mb-4 lg:p-0 lg:shadow-none lg:bg-transparent">
+              pedidos.map((item) => (
+                <tr key={item.id} className="block lg:table-row dark:bg-gray-800 rounded-lg shadow p-4 mb-4 lg:p-0 lg:shadow-none lg:bg-transparent">
                   {/* ID */}
-                  <td className="hidden lg:table-cell px-4 py-4 text-sm text-center">{item.id}</td>
+                  <td 
+                    data-th="ID"
+                    className="hidden lg:table-cell px-4 py-4 text-sm text-center">
+                    {item.id}
+                  </td>
 
                   {/* Ruta */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm text-center">{item.ruta.nombre}</td>
+                  <td 
+                    data-th="Ruta"
+                    className="block lg:table-cell px-4 py-4 text-sm text-center">
+                    {item.ruta.nombre}
+                  </td>
 
                   {/* Fecha */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm text-center">{item.fechaEntrega}</td>
+                  <td 
+                    data-th="Fecha"
+                    className="block lg:table-cell px-4 py-4 text-sm text-center">
+                    {item.fechaEntrega}
+                  </td>
 
                   {/* Estatus */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm text-center">
+                  <td 
+                    data-th="Estatus"
+                    className="block lg:table-cell px-4 py-4 text-sm text-center">
                     <span className={`px-2 py-1 rounded-full text-sm ${getStatusStyle(item.estado)}`}>
                       {item.estado}
                     </span>
                   </td>
 
                   {/* Trabajador */}
-                  <td className="block lg:table-cell px-4 py-4 text-sm text-center">{item.usuario.username}</td>
+                  <td 
+                    data-th="Trabajador"
+                    className="block lg:table-cell px-4 py-4 text-sm text-center">
+                    {item.usuario.username}
+                  </td>
 
                   {/* Opciones */}
                   <td className="block md:table-cell px-4 py-4 text-sm text-center">

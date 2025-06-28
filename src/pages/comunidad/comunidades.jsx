@@ -1,25 +1,28 @@
 import { useState, useEffect } from "react";
 
+import { hasPermission, RESOURCES } from "utils/permisos";
+import { useAuth } from "context/AuthContext";
+import { loadFiltrosComunidades } from "utils/filtrosPedidos"
+
 import Navbar from "components/navbar/Navbar";
 import Footer from "components/footer/Footer";
 import TableCommunity from "components/tables/communities/TableCommunity";
 import NewCommunityButton from "components/buttons/ButtonsForCommunityPage";
 import FilterCommunities from "components/filter/FilterCommunities";
 import Pagination from "components/pagination/Pagination";
-import { hasPermission, RESOURCES } from "utils/permisos";
-import { useAuth } from "context/AuthContext";
 
-const AllRoutes = () => {
+const CommunitiesPage = () => {
   const { user } = useAuth();
-  
+  const filtrosIniciales = loadFiltrosComunidades();
+
   // Estados de paginación
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(filtrosIniciales.currentPage || 1);
   const [pageSize, setPageSize] = useState(10);
 
-  // Estados de filtros
-  const [selectedCommunities, setSelectedCommunities] = useState([]);
-  const [selectedRoutes, setSelectedRoutes] = useState([]);
-  const [selectedMunicipalities, setSelectedMunicipalities] = useState([]);
+  // Cargar filtros desde localStorage al inicio
+  const [comunidades, setSelectedCommunities] = useState(filtrosIniciales.comunidades || []);
+  const [rutas, setSelectedRoutes] = useState(filtrosIniciales.rutas || []);
+  const [municipios, setSelectedMunicipalities] = useState(filtrosIniciales.municipios || []);
 
   // Estado para el total de elementos
   const [totalCommunities, setTotalCommunities] = useState(0);
@@ -27,10 +30,40 @@ const AllRoutes = () => {
   // Calcular total de páginas
   const totalPages = Math.ceil(totalCommunities / pageSize);
 
-  // Resetear página cuando cambian los filtros
+  // 1. Cargar filtros guardados al montar el componente
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCommunities, selectedRoutes, selectedMunicipalities]);
+    const savedFilters = localStorage.getItem("filtrosComunidades");
+    if (savedFilters) {
+      const parsedFilters = JSON.parse(savedFilters);
+      setSelectedCommunities(parsedFilters.comunidades || []);
+      setSelectedRoutes(parsedFilters.rutas || []);
+      setSelectedMunicipalities(parsedFilters.municipios || []);
+      
+      // Cargar la página guardada
+      if (parsedFilters.currentPage) {
+        setCurrentPage(parsedFilters.currentPage);
+      }
+    }
+  }, []);
+
+  // 2. Guardar filtros cuando cambian
+  useEffect(() => {
+    const filtersToSave = {
+      comunidades,
+      rutas,
+      municipios,
+      currentPage
+    };
+    localStorage.setItem("filtrosComunidades", JSON.stringify(filtersToSave));
+  }, [comunidades, rutas, municipios, currentPage]);
+
+  // Resetear página cuando cambian los filtros (excepto si es por carga inicial)
+  useEffect(() => {
+    // Solo resetear si no es la carga inicial de localStorage
+    if (comunidades.length > 0 || rutas.length > 0 || municipios.length > 0) {
+      setCurrentPage(1);
+    }
+  }, [comunidades, rutas, municipios]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -45,11 +78,11 @@ const AllRoutes = () => {
         )}
 
         <FilterCommunities
-          selectedCommunities={selectedCommunities}
+          selectedCommunities={comunidades}
           setSelectedCommunities={setSelectedCommunities}
-          selectedRoutes={selectedRoutes}
+          selectedRoutes={rutas}
           setSelectedRoutes={setSelectedRoutes}
-          selectedMunicipalities={selectedMunicipalities}
+          selectedMunicipalities={municipios}
           setSelectedMunicipalities={setSelectedMunicipalities}
         />
 
@@ -57,9 +90,9 @@ const AllRoutes = () => {
           currentPage={currentPage}
           pageSize={pageSize}
           filters={{
-            comunidades: selectedCommunities,
-            rutas: selectedRoutes,
-            municipios: selectedMunicipalities
+            comunidades,
+            rutas,
+            municipios
           }}
           setTotalCommunities={setTotalCommunities}
         />
@@ -67,8 +100,7 @@ const AllRoutes = () => {
         <div className="my-4">
           <Pagination
             currentPage={currentPage}
-            pageSize={pageSize}
-            totalPages={totalPages} 
+            totalPages={totalPages}
             onPageChange={setCurrentPage}
           />
         </div>
@@ -78,4 +110,4 @@ const AllRoutes = () => {
   );
 };
 
-export default AllRoutes;
+export default CommunitiesPage;

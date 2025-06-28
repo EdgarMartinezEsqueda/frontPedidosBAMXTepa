@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import FilterDropdown from "./components/FilterDropdown";
+import FilterDropdown from "components/filter/components/FilterDropdown";
 import api from "lib/axios";
 
 const FilterWrapper = ({
@@ -16,7 +16,7 @@ const FilterWrapper = ({
     queryKey: ["comunidades"],
     queryFn: async () => {
       const { data } = await api.get("/comunidades");
-      return data;
+      return data.communities;
     },
   });
 

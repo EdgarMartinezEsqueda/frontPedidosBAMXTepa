@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 
-import { loadFiltros } from "utils/filtrosPedidos"
+import { loadFiltrosPedidos } from "utils/filtrosPedidos"
 
 import Navbar from "components/navbar/Navbar";
 import Footer from "components/footer/Footer";
 import TableOrders from "components/tables/orders/TableOrders";
 import FilterOrders from "components/filter/FilterOrders";
 import Pagination from "components/pagination/Pagination";
-import ExportButton from "../components/buttons/ExportButton";
+import ExportButton from "components/buttons/ExportButton";
 
 const HomePage = () => {
-  const filtrosIniciales = loadFiltros();
+  const filtrosIniciales = loadFiltrosPedidos();
 
   // Estados de paginación
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(filtrosIniciales.currentPage || 1);
   const [pageSize, setPageSize] = useState(10);
 
   // Estado para los filtros seleccionados
@@ -37,6 +37,11 @@ const HomePage = () => {
       setRoutes(parsed.routes || []);
       setDateRange(parsed.dateRange || {});
       setStatusOrder(parsed.statusOrder || []);
+      
+      // Cargar la página guardada
+      if (parsed.currentPage) {
+        setCurrentPage(parsed.currentPage);
+      }
     }
   }, []);
 
@@ -47,13 +52,17 @@ const HomePage = () => {
       routes,
       dateRange,
       statusOrder,
+      currentPage
     };
     localStorage.setItem("filtrosPedidos", JSON.stringify(filtros));
-  }, [workers, routes, dateRange, statusOrder]);
+  }, [workers, routes, dateRange, statusOrder, currentPage]);
 
   // Resetear página cuando cambian los filtros
   useEffect(() => {
-    setCurrentPage(1);
+    // Solo resetear si no es la carga inicial de localStorage
+    if (workers.length > 0 || routes.length > 0 || statusOrder.length > 0 || dateRange.startDate || dateRange.endDate) {
+      setCurrentPage(1);
+    }
   }, [workers, routes, statusOrder, dateRange]);
 
   return (
@@ -101,7 +110,6 @@ const HomePage = () => {
         <div className="my-4">
           <Pagination
             currentPage={currentPage}
-            pageSize={pageSize}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
           />
