@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import useClickOutside from "hooks/useClickOutside";
 
-const DateFilter = ({ onDateChange }) => {
+const DateFilter = ({ onDateChange, dateRange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(dateRange.startDate || "");
+  const [endDate, setEndDate] = useState(dateRange.endDate || "");
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
 
