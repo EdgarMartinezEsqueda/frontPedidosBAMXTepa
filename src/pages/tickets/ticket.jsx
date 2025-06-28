@@ -31,8 +31,8 @@ const VerTicket = () => {
   });
 
   if (isLoading) return <LoadingState />;
-  if (isError) return <ErrorState error={error} />;
-  console.log(ticket)
+  if (isError) return <ErrorState error={error} />;æ
+  
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
       <Navbar />
