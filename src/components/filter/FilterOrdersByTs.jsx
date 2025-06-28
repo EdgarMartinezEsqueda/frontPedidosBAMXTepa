@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import FilterDropdown from "./components/FilterDropdown";
-import DateFilter from "./components/DateFilter";
+import FilterDropdown from "components/filter/components/FilterDropdown";
+import DateFilter from "components/filter/components/DateFilter";
 import api from "lib/axios";
 
 const FilterWrapper = ({

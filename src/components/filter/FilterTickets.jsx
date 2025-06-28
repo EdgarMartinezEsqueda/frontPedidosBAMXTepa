@@ -1,4 +1,4 @@
-import FilterDropdown from "./components/FilterDropdown";
+import FilterDropdown from "components/filter/components/FilterDropdown";
 
 const FilterTickets = ({
   selectedStatus,
