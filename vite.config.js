@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
         fonts: path.resolve(__dirname, "./fonts"),
         hooks: path.resolve(__dirname, "./src/hooks"),
         lib: path.resolve(__dirname, "./src/lib"),
+        pages: path.resolve(__dirname, "./src/pages"),
         utils: path.resolve(__dirname, "./src/utils"),
       }
     },
