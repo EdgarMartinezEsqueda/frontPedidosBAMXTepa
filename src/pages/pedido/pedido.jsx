@@ -13,6 +13,7 @@ import GroupButtons from "components/buttons/ButtonsForOrderPage";
 import ExportSingleOrderButton from "components/buttons/ExportSingleOrderButton";
 import BotonCobranza from "components/buttons/ButtonsCobranza";
 import FormularioCobranza from "components/forms/CobranzaForm";
+import { generateCobranzaPDF } from "utils/pdfGenerator";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -38,27 +39,44 @@ const OrderPage = () => {
 
   const generarCobranzaMutation = useMutation({
     mutationFn: async (datosAdicionales) => {
-        return api.post(`/cobranzas/generar/${id}`, {
-            usuarioId: user.data.id,
-            ...datosAdicionales
-        });
+      // Generar PDF directamente en el frontend
+      const pdfDoc = await generateCobranzaPDF(pedidoData, datosAdicionales);
+      
+      // Obtener el blob usando getBuffer
+      const buffer = await new Promise(resolve => {
+        pdfDoc.getBuffer(resolve);
+      });
+      
+      return new Blob([buffer], { type: 'application/pdf' });
     },
-    onSuccess: (response) => {
-        // Respuesta exitosa del backend
-        toast.success("Cobranza generada correctamente");
-        
-        // Invalidar query y resetear estado
-        queryClient.invalidateQueries(['pedido', id]);
-        setMostrarFormularioCobranza(false);
-        setDatosCobranza({
-            arpillasCantidad: 0,
-            arpillasImporte: 0,
-            excedentes: "",
-            excedentesImporte: 0
-        });
+    onSuccess: (pdfBlob) => {
+      // Descargar el PDF
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `cobranza_pedido#${id}_${pedidoData.ruta.nombre}_${new Date().toISOString().split("T")[0]}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Limpiar recursos
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfUrl);
+      }, 100);
+
+      // Actualizar estado y mostrar mensaje
+      toast.success("Cobranza generada correctamente");
+      setMostrarFormularioCobranza(false);
+      setDatosCobranza({
+        arpillasCantidad: 0,
+        arpillasImporte: 0,
+        excedentes: "",
+        excedentesImporte: 0
+      });
     },
     onError: (error) => {
-        toast.error(error.response?.data?.message || "Error al generar cobranza");
+      console.log(error);
+      toast.error(error.message || "Error al generar cobranza");
     }
   });
   
@@ -98,7 +116,8 @@ const OrderPage = () => {
               <div className="text-center md:text-left">
                 <h2 className="font-bold text-2xl text-verdeLogo">Pedido #{id}</h2>
                 <h2 className="text-md text-rojoLogo">{pedidoData.ruta.nombre}</h2>
-                <h3 className="text-sm">Hecho por: {pedidoData.usuario.username}</h3>
+                <h3 className="text-sm">Fecha de entrega estimada: <strong className="text-amarilloLogo">{new Date(pedidoData.fechaEntrega).toLocaleDateString("es-MX")}</strong></h3>
+                <h3 className="text-sm">Hecho por: <strong className="text-grisLogo">{pedidoData.usuario.username}</strong></h3>
               </div>
               <div className="self-center md:self-start">
                 <ExportSingleOrderButton pedido={pedidoData} />
