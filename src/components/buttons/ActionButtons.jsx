@@ -32,7 +32,7 @@ const ActionButtons = ({
         <button
           className={`text-gray-500 transition-colors duration-200 dark:text-gray-300 focus:outline-none ${
             getEditCondition(item) 
-              ? "cursor-not-allowed" 
+              ? "!cursor-not-allowed" 
               : "cursor-pointer hover:text-yellow-500 dark:hover:text-yellow-500"
           }`}
           onClick={() => !getEditCondition(item) && navigate(`/${basePath}/editar/${item.id}`)}
@@ -46,7 +46,7 @@ const ActionButtons = ({
         <button
           className={`text-gray-500 transition-colors duration-200 dark:text-gray-300 focus:outline-none ${
             getDeleteCondition(item) 
-              ? "cursor-not-allowed" 
+              ? "!cursor-not-allowed" 
               : "cursor-pointer hover:text-red-500 dark:hover:text-red-500"
           }`}
           onClick={() => !getDeleteCondition(item) && onDelete(item.id)}
