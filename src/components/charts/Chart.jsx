@@ -51,6 +51,7 @@ const renderActiveShape = (props) => {
 
 const ChartComponent = ({ type, title, data, bars, name }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const COLORS = ["#FDB913", "#0DB14C", "#ED1A3B", "#58595B", "#F87171", "#FBBF24", "#34D399", "#60A5FA", "#A78BFA", "#F472B6", "#FACC15", "#4ADE80"];
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -164,7 +165,14 @@ const ChartComponent = ({ type, title, data, bars, name }) => {
               paddingAngle={2}
               dataKey="value"
               onMouseEnter={onPieEnter}
-            />
+            >
+              {data.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.color || COLORS[index % COLORS.length]} 
+                />
+              ))}
+            </Pie>
             <Tooltip 
               contentStyle={{
                 backgroundColor: "#fff",
