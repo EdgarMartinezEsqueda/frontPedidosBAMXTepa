@@ -27,7 +27,7 @@ const TableCommunities = ({ currentPage, pageSize, filters, setTotalCommunities 
           params.municipios = filters.municipios.join(',');
       }
 
-      const { data } = await api.get("/comunidades", { params });
+      const { data } = await api.get("/comunidades/paginadas/todas", { params });
       
       // Actualizar el total de comunidades (para la paginación)
       setTotalCommunities(data.total);

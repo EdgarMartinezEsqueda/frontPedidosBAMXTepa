@@ -16,7 +16,7 @@ const FilterWrapper = ({
     queryKey: ["comunidades"],
     queryFn: async () => {
       const { data } = await api.get("/comunidades");
-      return data.communities;
+      return data;
     },
   });
 
