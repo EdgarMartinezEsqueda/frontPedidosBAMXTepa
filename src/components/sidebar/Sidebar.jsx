@@ -51,7 +51,7 @@ const Sidebar = () => {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`lg:hidden fixed top-20 left-4 z-50 text-2xl ${
+        className={`lg:hidden fixed top-20 left-4 z-50 text-2xl bg-bgClaro/50 rounded-full p-2 ${
           isOpen ? "left-68" : "left-4"
         }`}
       >
@@ -61,7 +61,7 @@ const Sidebar = () => {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } lg:block w-64 fixed lg:static h-full bg-white dark:bg-gray-800 shadow`}
+        } lg:block w-64 fixed lg:static h-full bg-white dark:bg-gray-800 shadow z-10`}
       >
         <div className="p-4 space-y-4">
           {filteredNavItems.map((item) => {
