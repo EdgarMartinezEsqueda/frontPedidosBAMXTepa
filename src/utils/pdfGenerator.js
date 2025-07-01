@@ -82,13 +82,13 @@ function buildCommunityTable(pedido) {
 
     return [
       { text: item.comunidad.nombre, style: "cellCenter" },
-      { text: `$${parseInt(costo).toFixed(2)}`, style: "cellCenter" },
+      { text: `$${parseInt(costo).toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, style: "cellCenter" },
       { text: item.despensasCosto.toString(), style: "cellCenter" },
       { text: item.despensasMedioCosto.toString(), style: "cellCenter" },
       { text: item.despensasSinCosto.toString(), style: "cellCenter" },
       { text: item.despensasApadrinadas.toString(), style: "cellCenter" },
       { text: total.toString(), style: "cellCenter" },
-      { text: `$${subtotal.toFixed(2)}`, style: "cellCenter" }
+      { text: `$${subtotal.toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, style: "cellCenter" }
     ];
   });
 
@@ -126,8 +126,8 @@ function buildCommunityTable(pedido) {
           { text: sum.medio.toString(), style: "cellCenter" },
           { text: sum.sin.toString(), style: "cellCenter" },
           { text: sum.apadrinadas.toString(), style: "cellCenter" },
-          { text: sum.total.toString(), style: "cellCenter" },
-          { text: `$${sum.subtotal.toFixed(2)}`, style: "cellCenter" }
+          { text: sum.total.toLocaleString("es-Mx"), style: "cellCenter" },
+          { text: `$${sum.subtotal.toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, style: "cellCenter" }
         ]
       ]
     },
@@ -151,8 +151,8 @@ function buildExtrasSection(datosAdicionales) {
       body: [
         [{ text: "EXTRAS", colSpan: 3, style: "tableHeader" }, {}, {}],
         [ { text: "CONCEPTO", style: "tableHeader" }, { text: "DETALLE", style: "tableHeader" }, { text: "IMPORTE", style: "tableHeader" } ],
-        [ { text: "ARPILLAS", style: "cellCenter" }, { text: datosAdicionales.arpillasCantidad.toString(), style: "cellCenter" }, { text: `$${totalArpillas.toFixed(2)}`, style: "cellCenter" } ],
-        [ { text: "EXCEDENTES", style: "cellCenter" }, { text: datosAdicionales.excedentes, style: "cellCenter" }, { text: `$${totalExcedentes.toFixed(2)}`, style: "cellCenter" } ]
+        [ { text: "ARPILLAS", style: "cellCenter" }, { text: datosAdicionales.arpillasCantidad.toString(), style: "cellCenter" }, { text: `$${totalArpillas.toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, style: "cellCenter" } ],
+        [ { text: "EXCEDENTES", style: "cellCenter" }, { text: datosAdicionales.excedentes, style: "cellCenter" }, { text: `$${totalExcedentes.toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, style: "cellCenter" } ]
       ]
     },
     layout: {
@@ -250,7 +250,7 @@ function buildTotalRecuperacion(pedido, datosAdicionales) {
           body: [
             [
               { text: "TOTAL RECUPERACIÓN POR RUTA:", bold: true, alignment: "right" },
-              { text: `$${totalGeneral.toFixed(2)}`, bold: true, alignment: "center" }
+              { text: `$${totalGeneral.toLocaleString("es-Mx", { minimumFractionDigits: 2, maximumFractionDigits: 2 } )}`, bold: true, alignment: "center" }
             ]
           ]
         },
