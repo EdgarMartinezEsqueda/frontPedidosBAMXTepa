@@ -51,7 +51,7 @@ const renderActiveShape = (props) => {
 
 const ChartComponent = ({ type, title, data, bars, name }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const COLORS = ["#FDB913", "#0DB14C", "#ED1A3B", "#58595B", "#F87171", "#FBBF24", "#34D399", "#60A5FA", "#A78BFA", "#F472B6", "#FACC15", "#4ADE80"];
+  const COLORS = ["#0DB14C", "#FDB913", "#ED1A3B", "#3B82F6", "#58595B", "#F87171", "#FBBF24", "#34D399", "#60A5FA", "#A78BFA", "#F472B6", "#FACC15", "#4ADE80"];
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -128,10 +128,10 @@ const ChartComponent = ({ type, title, data, bars, name }) => {
             <XAxis dataKey="mes" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="costo" fill="#F59E0B" stackId="a" />
-            <Bar dataKey="medioCosto" fill="#10B981" stackId="a" />
-            <Bar dataKey="sinCosto" fill="#FB7185" stackId="a" />
-            <Bar dataKey="apadrinadas" fill="#0F766E" stackId="a" />
+            <Bar dataKey="costo" fill="#0DB14C" stackId="a" />
+            <Bar dataKey="medioCosto" fill="#F59E0B" stackId="a" />
+            <Bar dataKey="sinCosto" fill="#ED1A3B" stackId="a" />
+            <Bar dataKey="apadrinadas" fill="#3B82F6" stackId="a" />
           </BarChart>
         ) : type === "line" ? (
           <LineChart data={data}>
