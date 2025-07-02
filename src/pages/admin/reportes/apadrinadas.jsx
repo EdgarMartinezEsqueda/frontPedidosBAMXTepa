@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -10,6 +11,7 @@ import ChartComponent from "components/charts/Chart";
 import Pagination from "components/pagination/Pagination";
 import KPICard from "components/cards/KPICard";
 import TableComponent from "components/tables/reports/Summary";
+import ReportFilter from "components/filter/FilterReport";
 
 const formatDate = (dateString) => {
   const options = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -17,13 +19,24 @@ const formatDate = (dateString) => {
 };
 
 const Report = () => {
+  const [filter, setFilter] = useState({
+      view: "anual",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1 // Mes actual (1-12)
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const { data: reportesData, isLoading, error } = useQuery({
-    queryKey: ["reportesApadrinadas"],
+    queryKey: ["reportesApadrinadas", filter],
     queryFn: async () => {
-      const { data } = await api.get("/reportes/apadrinadas");
+      const { data } = await api.get("/reportes/apadrinadas", {
+        params: {
+          view: filter.view,
+          year: filter.year,
+          month: filter.month
+        }
+      });
       return data;
     }
   });
@@ -66,6 +79,12 @@ const Report = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-6 bg-gray-50 space-y-6">
+          <div className="mb-4">
+            <ReportFilter
+              currentFilter={filter}
+              onChange={(f) => setFilter(f)}
+            />
+          </div>
           
           {/* Sección de KPIs */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

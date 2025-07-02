@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -11,8 +12,14 @@ import Pagination from "components/pagination/Pagination";
 import SearchInput from "components/search/Search";
 import KPICard from "components/cards/KPICard";
 import TableComponent from "components/tables/reports/Summary";
+import ReportFilter from "components/filter/FilterReport";
 
 const ReportEconomico = () => {
+  const [filter, setFilter] = useState({
+      view: "anual",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1 // Mes actual (1-12)
+  });
   const [currentComPage, setCurrentComPage] = useState(1);
   const [currentMunPage, setCurrentMunPage] = useState(1);
   const [currentRutaPage, setCurrentRutaPage] = useState(1);
@@ -22,9 +29,15 @@ const ReportEconomico = () => {
   const itemsPerPage = 10;
 
   const { data: reportesData, isLoading, error } = useQuery({
-    queryKey: ["reportesEconomia"],
+    queryKey: ["reportesEconomia", filter],
     queryFn: async () => {
-      const { data } = await api.get("/reportes/economicos");
+      const { data } = await api.get("/reportes/economicos", {
+        params: {
+          view: filter.view,
+          year: filter.year,
+          month: filter.month
+        }
+      });
       return data;
     }
   });
@@ -94,6 +107,12 @@ const ReportEconomico = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-4 sm:p-6 bg-gray-50 space-y-6 overflow-x-hidden">
+          <div className="mb-4">
+            <ReportFilter
+              currentFilter={filter}
+              onChange={(f) => setFilter(f)}
+            />
+          </div>
           {/* Sección de KPIs - 6 tarjetas */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             <KPICard
@@ -131,10 +150,10 @@ const ReportEconomico = () => {
                 title="Evolución Mensual ($)"
                 data={transformarEvolucionMensual(evolucionMensual)}
                 bars={[
-                  { dataKey: "costoTotal", name: "Costo Total", color: "#E09E00" },
-                  { dataKey: "ingresosRecaudados", name: "Ingresos", color: "#00E10C" },
-                  { dataKey: "despensasSubsidiadas", name: "Subsidiadas", color: "#E0005C" },
-                  { dataKey: "balance", name: "Balance", color: "#0044E0" }
+                  { dataKey: "costoTotal", name: "Costo Total", color: "#FDB913" },
+                  { dataKey: "ingresosRecaudados", name: "Ingresos", color: "#0DB14C" },
+                  { dataKey: "despensasSubsidiadas", name: "Subsidiadas", color: "#ED1A3B" },
+                  { dataKey: "balance", name: "Balance", color: "#58595B" }
                 ]}
               />
             </div>
@@ -217,8 +236,8 @@ const ReportEconomico = () => {
               title="Comparativa por Municipio ($)"
               data={transformarDatosComparativos(distribucionMunicipios)}
               bars={[
-                { dataKey: "Costo Total", name: "Costo Total", color: "#F59E0B" },
-                { dataKey: "Ingresos", name: "Ingresos", color: "#10B981" },
+                { dataKey: "Costo Total", name: "Costo Total", color: "#58595B" },
+                { dataKey: "Ingresos", name: "Ingresos", color: "#0DB14C" },
                 { dataKey: "Subsidiado", name: "Subsidiado", color: "#3B82F6" }
               ]}
             />
@@ -269,8 +288,8 @@ const ReportEconomico = () => {
               title="Comparativa por Ruta ($)"
               data={transformarDatosComparativos(distribucionRutas)}
               bars={[
-                { dataKey: "Costo Total", name: "Costo Total", color: "#F59E0B" },
-                { dataKey: "Ingresos", name: "Ingresos", color: "#10B981" },
+                { dataKey: "Costo Total", name: "Costo Total", color: "#FDB913" },
+                { dataKey: "Ingresos", name: "Ingresos", color: "#0DB14C" },
                 { dataKey: "Subsidiado", name: "Subsidiado", color: "#3B82F6" }
               ]}
             />
@@ -315,20 +334,20 @@ const ReportEconomico = () => {
 const transformarTiposDespensasBar = (detalle) => {
   if (!detalle) return [];
   return [
-    { ruta: "Costo Completo", valor: detalle.costoCompleto || 0, color: "#F59E0B" },
-    { ruta: "Medio Costo", valor: detalle.medioCosto || 0, color: "#10B981" },
-    { ruta: "Sin Costo", valor: detalle.sinCosto || 0, color: "#FB7185" },
-    { ruta: "Apadrinadas", valor: detalle.apadrinadas || 0, color: "#0F766E" }
+    { ruta: "Costo Completo", valor: detalle.costoCompleto || 0, color: "#0DB14C" },
+    { ruta: "Medio Costo", valor: detalle.medioCosto || 0, color: "#FDB913" },
+    { ruta: "Sin Costo", valor: detalle.sinCosto || 0, color: "#ED1A3B" },
+    { ruta: "Apadrinadas", valor: detalle.apadrinadas || 0, color: "#58595B" }
   ];
 };
 
 const transformarTiposDespensasConteoBar = (detalleConteo) => {
   if (!detalleConteo) return [];
   return [
-    { ruta: "Costo Completo", valor: detalleConteo.costoCompleto, color: "#F59E0B" },
-    { ruta: "Medio Costo", valor: detalleConteo.medioCosto, color: "#10B981" },
-    { ruta: "Sin Costo", valor: detalleConteo.sinCosto, color: "#FB7185" },
-    { ruta: "Apadrinadas", valor: detalleConteo.apadrinadas, color: "#0F766E" }
+    { ruta: "Costo Completo", valor: detalleConteo.costoCompleto, color: "#0DB14C" },
+    { ruta: "Medio Costo", valor: detalleConteo.medioCosto, color: "#FDB913" },
+    { ruta: "Sin Costo", valor: detalleConteo.sinCosto, color: "#ED1A3B" },
+    { ruta: "Apadrinadas", valor: detalleConteo.apadrinadas, color: "#58595B" }
   ];
 };
 

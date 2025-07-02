@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -8,12 +10,24 @@ import Sidebar from "components/sidebar/Sidebar";
 import ChartComponent from "components/charts/Chart";
 import TopList from "components/dashboard/TopList";
 import RouteMetricsTable from "components/tables/reports/Routes"; 
+import ReportFilter from "components/filter/FilterReport";
 
 const Report = () => {
+  const [filter, setFilter] = useState({
+      view: "anual",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1 // Mes actual (1-12)
+  });
   const { data: reportesData, isLoading, error } = useQuery({
-    queryKey: ["reportes-rutas"],
+    queryKey: ["reportesRutas", filter],
     queryFn: async () => {
-      const { data } = await api.get("/reportes/rutas");
+      const { data } = await api.get("/reportes/rutas", {
+        params: {
+          view: filter.view,
+          year: filter.year,
+          month: filter.month
+        }
+      });
       return data;
     }
   });
@@ -29,8 +43,13 @@ const Report = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-6 bg-gray-50">
-          <div className="grid grid-cols-1 gap-4">
-            
+          <div className="mb-4">
+            <ReportFilter
+              currentFilter={filter}
+              onChange={(f) => setFilter(f)}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4">            
             {/* Gráfica comparativa */}
             <div className="col-span-1">
               <ChartComponent

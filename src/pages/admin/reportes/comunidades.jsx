@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -11,17 +12,29 @@ import Pagination from "components/pagination/Pagination";
 import SearchInput from "components/search/Search";
 import KPICard from "components/cards/KPICard";
 import TableComponent from "components/tables/reports/Summary";
+import ReportFilter from "components/filter/FilterReport";
 
 const Report = () => {
+  const [filter, setFilter] = useState({
+      view: "anual",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1 // Mes actual (1-12)
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAllPedidos, setShowAllPedidos] = useState(false);
   const itemsPerPage = 10;
 
   const { data: reportesData, isLoading, error } = useQuery({
-    queryKey: ["reportesComunidades"],
+    queryKey: ["reportesComunidades", filter],
     queryFn: async () => {
-      const { data } = await api.get("/reportes/comunidades");
+      const { data } = await api.get("/reportes/comunidades", {
+        params: {
+          view: filter.view,
+          year: filter.year,
+          month: filter.month
+        }
+      });
       return data;
     }
   });
@@ -104,6 +117,12 @@ const Report = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-6 bg-gray-50 space-y-6">
+          <div className="mb-4">
+            <ReportFilter
+              currentFilter={filter}
+              onChange={(f) => setFilter(f)}
+            />
+          </div>
           {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <KPICard

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import api from "lib/axios";
 
 import Navbar from "components/navbar/Navbar";
@@ -11,8 +12,14 @@ import Pagination from "components/pagination/Pagination";
 import SearchInput from "components/search/Search";
 import KPICard from "components/cards/KPICard";
 import TableComponent from "components/tables/reports/Summary";
+import ReportFilter from "components/filter/FilterReport";
 
 const Report = () => {
+  const [filter, setFilter] = useState({
+      view: "anual",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1 // Mes actual (1-12)
+  });
   const [currentPage, setCurrentPage] = useState(1);  // Estado para paginación de comunidades
   const [searchTerm, setSearchTerm] = useState(""); // Estado para  la busqueda de comunidades
   const [showAllRoutes, setShowAllRoutes] = useState(false);  // Estado para mostrar todas las rutas
@@ -23,9 +30,15 @@ const Report = () => {
   const [sortConfig, setSortConfig] = useState({ key: 'fecha', direction: 'desc' });
 
   const { data: reportesData, isLoading, error } = useQuery({
-    queryKey: ["reportesDespensas"],
+    queryKey: ["reportesDespensas", filter],
     queryFn: async () => {
-      const { data } = await api.get("/reportes/despensas");
+      const { data } = await api.get("/reportes/despensas", {
+        params: {
+          view: filter.view,
+          year: filter.year,
+          month: filter.month
+        }
+      });
       return data;
     }
   });
@@ -123,6 +136,12 @@ const Report = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-6 bg-gray-50 space-y-6">
+          <div className="mb-4">
+            <ReportFilter
+              currentFilter={filter}
+              onChange={(f) => setFilter(f)}
+            />
+          </div>
           {/* Sección de KPIs */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <KPICard
