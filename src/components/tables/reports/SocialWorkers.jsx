@@ -9,9 +9,9 @@ const TSMetricsTable = ({ data }) => {
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Pendientes</th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Despensas</th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Devoluciones</th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Contribución</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Contribución (pedidos)</th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">% Devoluciones</th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Última Actividad</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Último Pedido</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">

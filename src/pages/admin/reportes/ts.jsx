@@ -66,7 +66,7 @@ const ReporteTS = () => {
               />
               <ChartComponent
                 type="pie"
-                title="Distribución de Pedidos"
+                title="Distribución de Despensas"
                 data={transformarDatosPastel(graficas.pastel)}
               />
             </div>

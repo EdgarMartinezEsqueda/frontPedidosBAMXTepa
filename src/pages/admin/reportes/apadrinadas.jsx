@@ -51,22 +51,6 @@ const Report = () => {
     topComunidades,
     ultimosPedidos
   } = reportesData;
-  
-  // Procesar datos para tablas
-  const processedComunidades = topComunidades.map(item => {
-    const nombre = item.nombre;
-    const regex = /^(.*?) \((.*?)\)$/;
-    const match = nombre.match(regex);
-    return match ? {
-      ...item,
-      comunidad: match[1].trim(),
-      municipio: match[2].trim()
-    } : {
-      ...item,
-      comunidad: nombre,
-      municipio: ''
-    };
-  });
 
   const paginatedPedidos = ultimosPedidos.slice(
     (currentPage - 1) * itemsPerPage,
@@ -137,11 +121,11 @@ const Report = () => {
               <h3 className="text-lg font-semibold mb-4">Top Comunidades</h3>
               <TableComponent
                 columns={[
-                  { key: "comunidad", title: "Comunidad" },
-                  { key: "municipio", title: "Municipio" },
+                  { key: "nombre", title: "Comunidad" },
+                  { key: "municipio.nombre", title: "Municipio" },
                   { key: "total", title: "Total Despensas" }
                 ]}
-                data={processedComunidades}
+                data={topComunidades}
               />
             </div>
           </div>

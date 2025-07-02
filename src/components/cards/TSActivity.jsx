@@ -1,7 +1,7 @@
-const RecentActivityCard = ({ tsId, pedidos }) => {
+const RecentActivityCard = ({ pedidos, username }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow">
-      <h4 className="font-medium text-gray-700 mb-3">TS-{tsId}</h4>
+      <h4 className="font-medium text-gray-700 mb-3">TS-{username}</h4>
       <div className="space-y-2">
         {pedidos.map((pedido, index) => (
           <div key={index} className="border-l-4 pl-3 py-1" style={{
