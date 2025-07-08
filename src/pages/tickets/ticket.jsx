@@ -30,9 +30,22 @@ const VerTicket = () => {
     }
   });
 
-  if (isLoading) return <LoadingState />;
-  if (isError) return <ErrorState error={error} />;æ
-  
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <p className="text-verdeLogo">Cargando el ticket</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-rojoLogo">Error cargando el ticket</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
       <Navbar />
