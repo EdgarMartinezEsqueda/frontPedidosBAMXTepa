@@ -116,7 +116,7 @@ const OrderPage = () => {
               <div className="text-center md:text-left">
                 <h2 className="font-bold text-2xl text-verdeLogo">Pedido #{id}</h2>
                 <h2 className="text-md text-rojoLogo">{pedidoData.ruta.nombre}</h2>
-                <h3 className="text-sm">Fecha de entrega estimada: <strong className="text-amarilloLogo">{new Date(pedidoData.fechaEntrega).toLocaleDateString("es-MX")}</strong></h3>
+                <h3 className="text-sm"> Fecha de entrega estimada:{" "} <strong className="text-amarilloLogo"> {new Date(...pedidoData.fechaEntrega.split('-').map((v, i) => i === 1 ? v - 1 : v)) .toLocaleDateString("es-MX")} </strong> </h3>
                 <h3 className="text-sm">Hecho por: <strong className="text-grisLogo">{pedidoData.usuario.username}</strong></h3>
               </div>
               <div className="self-center md:self-start">
