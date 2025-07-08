@@ -22,9 +22,28 @@ const FilterWrapper = ({
     },
   });
 
+  // Fetch para trabajadores
+  const { data: rutasData } = useQuery({
+    queryKey: ["allRutas"],
+    queryFn: async () => {
+      const { data } = await api.get("/rutas");
+      return data;
+    },
+  });
+
+  // Fetch para trabajadores
+  const { data: workersData } = useQuery({
+    queryKey: ["allWorkersWithOrders"],
+    queryFn: async () => {
+      const { data } = await api.get("/usuarios/todos/conPedidos");
+      console.log("Datos de trabajadores:", data);
+      return data;
+    },
+  });
+
   // Procesar datos para los filtros
-  const availableRoutes = [ ...new Set( pedidosData?.map(u => u.ruta.nombre) ) ].reverse() || [];
-  const availableWorkers = [ ...new Set( pedidosData?.map(u => u.usuario.username) ) ] || [];
+  const availableRoutes = [ ...new Set( rutasData?.map(r => r.nombre) ) ].reverse() || [];
+  const availableWorkers = [ ...new Set( workersData?.map(u => u.username) ) ] || [];
   const statusOrders = ["pendiente", "finalizado"];
   
   return (
