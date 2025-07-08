@@ -4,7 +4,7 @@ import AcceptButton from "components/buttons/Accept";
 import { useAuth } from "context/AuthContext";
 import { hasPermission } from "utils/permisos";
 
-const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
+const UserForm = ({ onSubmit, isSubmitting, existingUser, newUser = false }) => {
   const initialData = {
     username: "",
     email: "",
@@ -120,7 +120,7 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
         {clientErrors.email && <p className="text-red-500 text-sm">{clientErrors.email}</p>}
       </div>
 
-      {user.data.rol === "Direccion" && 
+      { !newUser && user.data.rol === "Direccion" && 
         (<div>
           <label htmlFor="rol" className="block text-sm font-medium text-gray-700">
             Rol
@@ -175,7 +175,7 @@ const UserForm = ({ onSubmit, isSubmitting, existingUser }) => {
         )}
       </div>
 
-      {user.data.rol === "Direccion" && 
+      {!newUser && user.data.rol === "Direccion" && 
         (<div className="flex items-center">
           <input
             type="checkbox"

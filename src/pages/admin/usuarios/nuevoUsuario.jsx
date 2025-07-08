@@ -26,8 +26,12 @@ const CreateUser = () => {
       <Navbar />
       <main className="flex-1">
         <div className="max-w-2xl mx-auto p-4">
-          <h1 className="text-2xl font-bold mb-6">Crear Nuevo Usuario</h1>
-          <UserForm onSubmit={mutate} isSubmitting={isPending} />
+          <h2 className="text-2xl font-bold mb-6">Crear Nuevo Usuario</h2>
+          <UserForm 
+            onSubmit={mutate} 
+            isSubmitting={isPending} 
+            newUser={true}            
+          />
         </div>
       </main>
       <Footer />
