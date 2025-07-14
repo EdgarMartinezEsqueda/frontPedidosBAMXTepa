@@ -84,26 +84,17 @@ const TableTicket = ({ currentPage, pageSize, filters, setTotalTickets }) => {
       <div className="flex flex-col items-center">
         <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
           <div className="inline-block md:min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+            {/* 🌱 overflow-x-auto para hacer la tabla responsiva */}
+            <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg max-w-full">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-800 hidden md:table-header-group">
                   <tr>
-                    <th className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      ID
-                    </th>
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      Descripción
-                    </th>
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      Prioridad
-                    </th>
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      Estado
-                    </th>
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      Fecha
-                    </th>
-                    <th className="relative py-3.5 px-4">
+                    <th className="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 md:w-[80px]">ID</th>
+                    <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 md:w-1/3 max-w-[300px]">Descripción</th>
+                    <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 md:w-[120px]">Prioridad</th>
+                    <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 md:w-[120px]">Estado</th>
+                    <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 md:w-[180px]">Fecha</th>
+                    <th className="relative py-3.5 px-4 md:w-[100px]">
                       <span className="sr-only">Acciones</span>
                     </th>
                   </tr>
@@ -118,36 +109,28 @@ const TableTicket = ({ currentPage, pageSize, filters, setTotalTickets }) => {
                   ) : (
                     paginatedData.map((ticket) => (
                       <tr key={ticket.id} className="block md:table-row border-b border-gray-200 dark:border-gray-700 mb-4 md:mb-0 bg-white dark:bg-gray-800 shadow-sm md:shadow-none">
-                        <td 
-                          data-th="ID"
-                          className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap text-right md:text-left before:content-[attr(data-th)':_'] before:font-bold before:absolute before:left-4 before:text-gray-600 dark:before:text-gray-300 relative pl-28 md:before:content-none md:pl-4 even:bg-gray-50 dark:even:bg-gray-700/30">
+                        <td data-th="ID" className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap md:text-left relative pl-28 md:pl-4 md:before:content-none even:bg-gray-50 dark:even:bg-gray-700/30 max-md:hidden">
                           <Link to={`/tickets/${ticket.id}`} className="text-verdeLogo hover:underline">
                             #{ticket.id}
                           </Link>
                         </td>
-                        <td 
-                          data-th="Descripción"
-                          className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap text-right md:text-left before:content-[attr(data-th)':_'] before:font-bold before:absolute before:left-4 before:text-gray-600 dark:before:text-gray-300 relative pl-28 md:before:content-none md:pl-4 even:bg-gray-50 dark:even:bg-gray-700/30">
-                          <span className="line-clamp-2">{ticket.descripcion}</span>
+                        <td data-th="Descripción" className="block md:table-cell py-4 px-4 text-sm md:text-left relative pl-28 md:pl-4 md:max-w-[300px] md:before:content-none even:bg-gray-50 dark:even:bg-gray-700/30">
+                          <span className="line-clamp-2 md:line-clamp-none md:overflow-hidden md:whitespace-nowrap md:text-ellipsis">
+                            {ticket.descripcion}
+                          </span>
                         </td>
-                        <td 
-                          data-th="Prioridad"
-                          className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap text-right md:text-left before:content-[attr(data-th)':_'] before:font-bold before:absolute before:left-4 before:text-gray-600 dark:before:text-gray-300 relative pl-28 md:before:content-none md:pl-4 even:bg-gray-50 dark:even:bg-gray-700/30">
+                        <td data-th="Prioridad" className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap md:text-left relative pl-28 md:pl-4 md:before:content-none even:bg-gray-50 dark:even:bg-gray-700/30">
                           <span className={`px-2 py-1 rounded-full text-sm ${getPriorityStyle(ticket.prioridad)}`}>
                             {ticket.prioridad}
                           </span>
                         </td>
-                        <td 
-                          data-th="Estado"
-                          className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap text-right md:text-left before:content-[attr(data-th)':_'] before:font-bold before:absolute before:left-4 before:text-gray-600 dark:before:text-gray-300 relative pl-28 md:before:content-none md:pl-4 even:bg-gray-50 dark:even:bg-gray-700/30">
+                        <td data-th="Estado" className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap md:text-left relative pl-28 md:pl-4 md:before:content-none even:bg-gray-50 dark:even:bg-gray-700/30">
                           <span className={`px-2 py-1 rounded-full text-sm ${getStatusStyle(ticket.estatus)}`}>
                             {ticket.estatus}
                           </span>
                         </td>
-                        <td 
-                          data-th="Fecha"
-                          className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap text-right md:text-left before:content-[attr(data-th)':_'] before:font-bold before:absolute before:left-4 before:text-gray-600 dark:before:text-gray-300 relative pl-28 md:before:content-none md:pl-4 even:bg-gray-50 dark:even:bg-gray-700/30">
-                          { new Date(ticket.createdAt).toLocaleString("es-MX",{hour12: false}) }
+                        <td data-th="Fecha" className="block md:table-cell py-4 px-4 text-sm whitespace-nowrap md:text-left relative pl-28 md:pl-4 md:before:content-none even:bg-gray-50 dark:even:bg-gray-700/30">
+                          { new Date(ticket.createdAt).toLocaleString("es-MX", {hour12: false}) }
                         </td>
                         <td className="block md:table-cell px-4 py-4 text-sm whitespace-nowrap relative even:bg-gray-50 dark:even:bg-gray-700/30">
                           <ActionButtons 
@@ -170,6 +153,7 @@ const TableTicket = ({ currentPage, pageSize, filters, setTotalTickets }) => {
       </div>
     </section>
   );
+
 };
 
 export default TableTicket;
