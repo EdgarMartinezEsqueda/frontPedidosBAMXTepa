@@ -17,15 +17,17 @@ export const RESOURCES = {
 };
 
 const permissions = {
-  [ROLES.DIRECCION]: { // Acceso completo a todo
-    [RESOURCES.PEDIDOS]: ["create", "read", "update", "delete"],
+  [ROLES.DIRECCION]: {
+    // Acceso completo a todo
+    [RESOURCES.PEDIDOS]: ["create", "read", "update", "delete", "revert"],
     [RESOURCES.RUTAS]: ["create", "read", "update", "delete"],
     [RESOURCES.COMUNIDADES]: ["create", "read", "update", "delete"],
     [RESOURCES.USUARIOS]: ["create", "read", "update", "delete"],
     [RESOURCES.TICKETS]: ["create", "read", "update", "delete"],
-    [RESOURCES.COBRANZAS]: ["read", "create", "update"]
+    [RESOURCES.COBRANZAS]: ["create", "read", "update"]
   },
-  [ROLES.CONSEJO]: { // Acceso para ver todo, pero no podrá editar ni borrar nada
+  [ROLES.CONSEJO]: {
+    // Solo lectura general. Puede editar su propio usuario.
     [RESOURCES.PEDIDOS]: ["read"],
     [RESOURCES.RUTAS]: ["read"],
     [RESOURCES.COMUNIDADES]: ["read"],
@@ -81,7 +83,7 @@ const permissions = {
       ownershipCheck: (user, resourceId) => user.id === Number(resourceId)
     },
     [RESOURCES.TICKETS]: ["read"],
-    [RESOURCES.COBRANZAS]: ["read", "create", "update"]
+    [RESOURCES.COBRANZAS]: ["create", "read", "update"]
   }
 };
 
