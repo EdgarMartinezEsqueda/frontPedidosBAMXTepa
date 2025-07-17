@@ -14,6 +14,7 @@ import ExportSingleOrderButton from "components/buttons/ExportSingleOrderButton"
 import BotonCobranza from "components/buttons/ButtonsCobranza";
 import FormularioCobranza from "components/forms/CobranzaForm";
 import { generateCobranzaPDF } from "utils/pdfGenerator";
+import ReturnToEditButton from "components/buttons/ReturnToEditButton";
 
 const OrderPage = () => {
   const { id } = useParams();
@@ -185,6 +186,9 @@ const OrderPage = () => {
                 </span>
               </div>
             </div>
+            {hasPermission(user.data, RESOURCES.PEDIDOS, "revert", pedidoData.idTs) && (
+              <ReturnToEditButton id={id} />
+            )}
           </div>
         }
         {/* Mostrar botón/formulario de cobranza */}
@@ -207,7 +211,7 @@ const OrderPage = () => {
               )}
             </>
           )
-        }
+        }        
       </main>
       <Footer />
       </div>
