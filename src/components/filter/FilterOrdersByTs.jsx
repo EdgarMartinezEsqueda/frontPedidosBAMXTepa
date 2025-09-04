@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import FilterDropdown from "components/filter/components/FilterDropdown";
 import DateFilter from "components/filter/components/DateFilter";
+import FilterDropdown from "components/filter/components/FilterDropdown";
+import { useAuth } from "context/AuthContext";
 import api from "lib/axios";
 
 const FilterWrapper = ({
@@ -12,16 +13,17 @@ const FilterWrapper = ({
   setStatusOrder
 }) => {
   // Fetch para trabajadores
+  const { user } = useAuth();
   const { data: pedidosData } = useQuery({
-    queryKey: ["pedidos"],
+    queryKey: ["pedidosPorTs", user.data.id],
     queryFn: async () => {
-      const { data } = await api.get("/pedidos");
+      const { data } = await api.get(`/pedidos/ts/${user.data.id}`);
       return data;
     },
   });
 
   // Procesar datos para los filtros
-  const availableRoutes = [ ...new Set( pedidosData?.map(u => u.ruta.nombre) ) ].reverse() || [];
+  const availableRoutes = [ ...new Set( pedidosData?.map(p => p.ruta.nombre) ) ].reverse() || [];
   const statusOrders = ["pendiente", "finalizado"];
   
   return (
