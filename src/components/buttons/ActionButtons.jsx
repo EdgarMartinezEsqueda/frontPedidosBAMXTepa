@@ -1,8 +1,8 @@
-import React from "react";
-import { useNavigate } from "react-router";
+import { useAuth } from "context/AuthContext";
+import { useConfirmDelete } from "hooks/useConfirmDelete";
 import { FaRegEdit, FaRegEye } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
-import { useAuth } from "context/AuthContext";
+import { useNavigate } from "react-router";
 import { hasPermission } from "utils/permisos";
 
 const ActionButtons = ({
@@ -10,12 +10,20 @@ const ActionButtons = ({
   resource,
   basePath,
   onDelete,
+  onEdit,
   getEditCondition = () => false,
   getDeleteCondition = () => false,
-  showView = true
+  showView = true,
+  // Props para personalizar el modal de confirmación
+  deleteConfirmOptions = {}
 }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { confirmDelete } = useConfirmDelete();
+
+  const handleDelete = async (itemId) => {
+    await confirmDelete(onDelete, itemId, deleteConfirmOptions);
+  };
 
   return (
     <div className="flex justify-end md:justify-center gap-x-6 text-lg">
@@ -35,13 +43,21 @@ const ActionButtons = ({
               ? "!cursor-not-allowed" 
               : "cursor-pointer hover:text-yellow-500 dark:hover:text-yellow-500"
           }`}
-          onClick={() => !getEditCondition(item) && navigate(`/${basePath}/editar/${item.id}`)}
+          onClick={() => {
+            if (!getEditCondition(item)) {
+              if (onEdit) {
+                onEdit(item);
+              } else {
+                navigate(`/${basePath}/editar/${item.id}`);
+              }
+            }
+          }}
           disabled={getEditCondition(item)}
         >
           <FaRegEdit />
         </button>
       )}
-
+      
       {hasPermission(user.data, resource, "delete") && (
         <button
           className={`text-gray-500 transition-colors duration-200 dark:text-gray-300 focus:outline-none ${
@@ -49,7 +65,7 @@ const ActionButtons = ({
               ? "!cursor-not-allowed" 
               : "cursor-pointer hover:text-red-500 dark:hover:text-red-500"
           }`}
-          onClick={() => !getDeleteCondition(item) && onDelete(item.id)}
+          onClick={() => !getDeleteCondition(item) && handleDelete(item.id)}
           disabled={getDeleteCondition(item)}
         >
           <MdDeleteOutline />
